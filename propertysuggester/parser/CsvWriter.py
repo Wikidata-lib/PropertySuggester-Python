@@ -13,10 +13,11 @@ def write_csv(entities, output_file, sep=","):
     @type output_file: file or StringIO.StringIO
     @type sep: str
     """
+    s = u"{1}{0}{2}{0}{3}{0}{4}\n"
     for entity in entities:
         for claim in entity.claims:
-            output_file.write("{1}{0}{2}{0}{3}{0}{4}\n".format(sep, entity, claim.property_id, claim.datatype, claim.value).encode("utf-8"))
-
+            line = s.format(sep, entity.title, claim.property_id, claim.datatype, claim.value).encode("utf-8")
+            output_file.write(line)
 
 
 if __name__ == "__main__":
@@ -30,4 +31,4 @@ if __name__ == "__main__":
 
     start = time.time()
     write_csv(XmlReader.read_xml(args.input, args.processes), args.output)
-    print "total time: %.2fs"%(time.time() - start)
+    print "total time: %.2fs" % (time.time() - start)
