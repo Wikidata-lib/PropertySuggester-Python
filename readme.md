@@ -2,8 +2,8 @@
 Contains scripts for PropertySuggester to preprocess the wikidata dump
 
 ## usage 
-- use CsvWriter.py to convert a wikidata dump to csv
-- use SqlGenerator.py to load suggestion data into the wikidata db
+- use dumpconverter.py to convert a wikidata dump to csv
+- use sqlloader.py to load suggestion data from csv into the wikidata db
 
 
 ### install
