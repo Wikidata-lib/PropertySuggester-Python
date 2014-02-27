@@ -1,9 +1,5 @@
-import argparse
 
 from collections import defaultdict
-from propertysuggester.parser import CsvReader
-from propertysuggester.utils.CompressedFileType import CompressedFileType
-
 
 def compute_table(generator):
     """
@@ -26,10 +22,3 @@ def compute_table(generator):
                 if pid1 != pid2:
                     table[pid1][pid2] += 1
     return table
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="this program generates a probability-table from a CSV-file")
-    parser.add_argument("input", help="The CSV input file (wikidata triple)", type=CompressedFileType('r'))
-    args = parser.parse_args()
-    t = compute_table(CsvReader.read_csv(args.input))
-    print t

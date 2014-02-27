@@ -1,23 +1,9 @@
+import argparse
 import sys
 import time
-import argparse
 
-from propertysuggester.utils.datatypes import Entity
-from propertysuggester.parser import XmlReader
-from propertysuggester.utils import CompressedFileType
-
-
-def write_csv(entities, output_file, sep=","):
-    """
-    @type entities: collections.Iterable[Entity]
-    @type output_file: file or StringIO.StringIO
-    @type sep: str
-    """
-    for entity in entities:
-        for claim in entity.claims:
-            output_file.write("{1}{0}{2}{0}{3}{0}{4}\n".format(sep, entity, claim.property_id, claim.datatype, claim.value).encode("utf-8"))
-
-
+from propertysuggester.parser import XmlReader, CsvWriter
+from propertysuggester.utils.CompressedFileType import CompressedFileType
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="this program converts wikidata XML dumps to CSV data.")
@@ -29,5 +15,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     start = time.time()
-    write_csv(XmlReader.read_xml(args.input, args.processes), args.output)
+    CsvWriter.write_csv(XmlReader.read_xml(args.input, args.processes), args.output)
     print "total time: %.2fs"%(time.time() - start)

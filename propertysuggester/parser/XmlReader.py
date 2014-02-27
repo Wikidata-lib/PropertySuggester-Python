@@ -8,8 +8,7 @@ with open("file.csv", "r") as f:
 
 """
 import multiprocessing
-import time, argparse, traceback, signal
-from propertysuggester.utils.CompressedFileType import CompressedFileType
+import traceback, signal
 from propertysuggester.utils.datatypes import Claim, Entity
 
 try:
@@ -115,21 +114,3 @@ def _process_json((title, json_string)):
         claims.append(Claim(prop, datatype, value))
     return Entity(title, claims)
 
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input", help="The XML input file (a wikidata dump), gzip is supported",
-                        default="test/Wikidata-20131129161111.xml.gz", nargs="?", type=CompressedFileType('r'))
-    parser.add_argument("-v", "--verbose", help="Show output", action="store_true")
-    parser.add_argument("-p", "--processes", help="Number of processors to use (default 4)", type=int, default=4)
-    args = parser.parse_args()
-
-    start = time.time()
-    if not args.verbose:
-        for x in read_xml(args.input, args.processes):
-            pass
-    else:
-        for x in read_xml(args.input, args.processes):
-            print x
-
-    print "total time: %.2fs" % (time.time() - start)

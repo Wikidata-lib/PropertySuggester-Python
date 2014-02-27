@@ -1,6 +1,6 @@
 import unittest
 import gzip
-from  pkg_resources import resource_filename
+from pkg_resources import resource_filename
 
 from testtools import TestCase
 from testtools.matchers import *
