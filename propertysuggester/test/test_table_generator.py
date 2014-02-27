@@ -1,8 +1,8 @@
 import unittest
 from testtools import TestCase
 from testtools.matchers import *
+from propertysuggester import MatrixGenerator
 from propertysuggester.utils.datatypes import Entity, Claim
-from propertysuggester.parser import TableGenerator
 
 test_data1 = [Entity('Q15', [Claim(31, 'wikibase-entityid', 'Q5107'),
                              Claim(373, 'string', 'Africa')]),
@@ -18,7 +18,7 @@ class TableGeneratorTest(TestCase):
         TestCase.setUp(self)
 
     def testTableGenerator(self):
-        table = TableGenerator.compute_table(test_data1)
+        table = MatrixGenerator.compute_table(test_data1)
         self.assertThat(table, ContainsAll((31, 373)))
 
         self.assertThat(table[31]['appearances'], Equals(2))
@@ -32,7 +32,7 @@ class TableGeneratorTest(TestCase):
         self.assertThat(table[373][31], Equals(1))
 
     def testTableWithMultipleOccurance(self):
-        table = TableGenerator.compute_table(test_data2)
+        table = MatrixGenerator.compute_table(test_data2)
 
         self.assertThat(table[31]['appearances'], Equals(1))
         self.assertThat(table[31]['type'], Equals('wikibase-entityid'))

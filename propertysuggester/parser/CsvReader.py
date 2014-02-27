@@ -8,10 +8,7 @@ with open("file.csv", "r") as f:
 
 """
 
-import argparse, time
-
 from propertysuggester.utils.datatypes import Claim, Entity
-from propertysuggester.utils.CompressedFileType import CompressedFileType
 
 def read_csv(input_file, separator=","):
     """
@@ -33,20 +30,3 @@ def read_csv(input_file, separator=","):
     if not current_title is None:
         yield Entity(current_title, claims)
 
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input", help="The CSV input file (a wikidata dump), gzip is supported",
-                        type=CompressedFileType('r'))
-    parser.add_argument("-s", "--silent", help="Show output", action="store_true")
-    args = parser.parse_args()
-
-    start = time.time()
-    if args.silent:
-        for element in read_csv(args.input):
-            pass
-    else:
-        for element in read_csv(args.input):
-            print element
-
-    print "total time: %.2fs"%(time.time() - start)

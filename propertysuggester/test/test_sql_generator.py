@@ -1,7 +1,6 @@
 import unittest
 from testtools import TestCase
 from mockito import mock, contains, verify, verifyNoMoreInteractions
-
 from propertysuggester import SqlGenerator
 
 
