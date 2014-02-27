@@ -1,6 +1,6 @@
 import argparse
-from datetime import time
 import sys
+import time
 
 from propertysuggester.parser import XmlReader, CsvWriter
 from propertysuggester.utils.CompressedFileType import CompressedFileType
