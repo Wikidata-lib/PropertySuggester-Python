@@ -7,4 +7,4 @@ install:
     - pip install -r requirements.txt
 
 script: 
-    - nosetests
+    - nosetests --verbose --cover-package=propertysuggester --with-coverage --cover-min-percentage=80
