@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     start = time.time()
     CsvWriter.write_csv(XmlReader.read_xml(args.input, args.processes), args.output)
-    print "total time: %.2fs"%(time.time() - start)
+    print "total time: %.2fs" % (time.time() - start)
