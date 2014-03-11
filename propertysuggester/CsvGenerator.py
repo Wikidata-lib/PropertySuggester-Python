@@ -1,12 +1,12 @@
 import csv
 
-
-def create_pair_csv(table, out):
+def create_pair_csv(table, out, delimiter=";"):
     """
     @type table: dict[int, dict]
-    @type out: Cursor
+    @type out: file
+    @type delimiter: string
     """
-    csv_writer = csv.writer(out, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+    csv_writer = csv.writer(out, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
     print "properties: {0}".format(len(table))
 
     csv_writer.writerow(("pid1", "pid2", "count", "probability"))

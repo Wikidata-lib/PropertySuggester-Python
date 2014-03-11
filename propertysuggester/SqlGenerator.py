@@ -1,7 +1,9 @@
 from MySQLdb.cursors import Cursor
 
+
 def load_table_into_db(table, db):
     """
+
     @type table: dict[int, dict]
     @type db: Cursor
     """
