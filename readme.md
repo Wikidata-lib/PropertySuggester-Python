@@ -25,3 +25,4 @@ nosetests
 ```
 
 [![Build Status](https://travis-ci.org/Wikidata-lib/PropertySuggester-Python.png?branch=master)](https://travis-ci.org/Wikidata-lib/PropertySuggester-Python)
+[![Coverage Status](https://coveralls.io/repos/Wikidata-lib/PropertySuggester-Python/badge.png)](https://coveralls.io/r/Wikidata-lib/PropertySuggester-Python)
