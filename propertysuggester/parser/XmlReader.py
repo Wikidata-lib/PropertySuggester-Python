@@ -36,7 +36,7 @@ def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
-def read_xml(input_file, thread_count=4):
+def read_xml(input_file, thread_count=1):
     """
     @rtype : collections.Iterable[Entity]
     @type input_file:  file or GzipFile or StringIO.StringIO
@@ -99,6 +99,8 @@ def _process_json((title, json_string)):
                 value = "Q" + str(claim[3]["numeric-id"])
             elif datatype == "time":
                 value = claim[3]["time"]
+            elif datatype == "quantity":
+                value = claim[3]["amount"]
             elif datatype == "globecoordinate":
                 value = "N%f, E%f" % (claim[3]["latitude"], claim[3]["longitude"])
             elif datatype == "bad":
@@ -107,7 +109,7 @@ def _process_json((title, json_string)):
             else:
                 print "WARNING unknown wikidata datatype: %s" % datatype
                 continue
-        else: # novalue, somevalue, ...
+        else:  # novalue, somevalue, ...
             datatype = "unknown"
             value = claim[0]
 

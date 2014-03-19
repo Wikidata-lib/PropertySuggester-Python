@@ -2,11 +2,12 @@ import unittest
 import gzip
 from pkg_resources import resource_filename
 
-from testtools import TestCase
+from testtools import TestCase, skip
 from testtools.matchers import *
 
 from propertysuggester.test.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import XmlReader
+from propertysuggester.utils.datatypes import Claim
 
 
 class XmlReaderTest(AbstractUniverseTest):
@@ -14,6 +15,16 @@ class XmlReaderTest(AbstractUniverseTest):
         TestCase.setUp(self)
         with gzip.open(resource_filename("propertysuggester.test", "Wikidata-Q1.xml.gz"), "r") as f:
             self.result = list(XmlReader.read_xml(f))
+
+    def testUpdatedDump(self):
+        with gzip.open(resource_filename("propertysuggester.test", "Wikidata-Q9351.xml.gz"), "r") as f:
+            result = list(XmlReader.read_xml(f))
+
+        self.assertThat(len(result), Equals(1))
+        q9351 = result[0]
+        self.assertThat(q9351.title, Equals("Q9351"))
+        self.assertThat(q9351.claims, Contains(Claim(156, "wikibase-entityid", "Q1647331")))
+        self.assertThat(q9351.claims, Contains(Claim(1112, "quantity", "+25")))
 
 
 class MultiprocessingBigTest(TestCase):

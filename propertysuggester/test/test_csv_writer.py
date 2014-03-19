@@ -25,10 +25,10 @@ class CsvWriterTest(TestCase):
         out.seek(0)
 
         line = out.readline()
-        self.assertThat(line, Equals("Q51,31,wikibase-entityid,Q5107\n"))
+        self.assertThat(line.strip(), Equals("Q51,31,wikibase-entityid,Q5107"))
 
         line = out.readline()
-        self.assertThat(line, Equals("Q51,373,string,Europe\n"))
+        self.assertThat(line.strip(), Equals("Q51,373,string,Europe"))
 
         self.assertThat(out.read(), Equals(""))
 
