@@ -8,7 +8,8 @@ with open("file.csv", "r") as f:
 
 """
 import multiprocessing
-import traceback, signal
+import traceback
+import signal
 from propertysuggester.utils.datatypes import Claim, Entity
 
 try:
@@ -90,7 +91,7 @@ def _process_json((title, json_string)):
     claims = []
     for claim in data["claims"]:
         claim = claim["m"]
-        prop = claim[1]
+        property_id = claim[1]
         if claim[0] == "value":
             datatype = claim[2]
             if datatype == "string":
@@ -102,7 +103,7 @@ def _process_json((title, json_string)):
             elif datatype == "quantity":
                 value = claim[3]["amount"]
             elif datatype == "globecoordinate":
-                value = "N%f, E%f" % (claim[3]["latitude"], claim[3]["longitude"])
+                value = "N{0}, E{1}".format(claim[3]["latitude"], claim[3]["longitude"])
             elif datatype == "bad":
                 # for example in Q2241
                 continue
@@ -113,6 +114,6 @@ def _process_json((title, json_string)):
             datatype = "unknown"
             value = claim[0]
 
-        claims.append(Claim(prop, datatype, value))
+        claims.append(Claim(property_id, datatype, value))
     return Entity(title, claims)
 

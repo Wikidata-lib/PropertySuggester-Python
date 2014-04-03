@@ -9,7 +9,7 @@ Contains scripts for PropertySuggester to preprocess the wikidata dump
 ```
 python dumpconverter.py wikidatawiki-20140226-pages-articles.xml.bz2 dump.csv
 python analyzer.py dump.csv wbs_propertypairs.csv
-php extensions/PropertySuggester/maintenance/loadcsv.php wbs_propertypairs.csv
+php extensions/PropertySuggester/maintenance/UpdateTable.php wbs_propertypairs.csv
 ```
 
 

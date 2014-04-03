@@ -11,6 +11,7 @@ import csv
 
 from propertysuggester.utils.datatypes import Claim, Entity
 
+
 def read_csv(input_file, delimiter=","):
     """
     @rtype : collections.Iterable[Entity]

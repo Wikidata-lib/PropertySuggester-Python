@@ -2,6 +2,10 @@
 
 class Entity:
     def __init__(self, name, claims):
+        """
+        @type name: str
+        @type claims: list[Claim]
+        """
         self.title = name
         self.claims = claims
 
