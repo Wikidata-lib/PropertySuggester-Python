@@ -4,7 +4,7 @@ from testtools import TestCase
 from testtools.matchers import *
 
 from propertysuggester.analyzer import TableGenerator
-from propertysuggester.utils.datatypes import Entity, Claim
+from propertysuggester.utils.datamodel import Entity, Claim
 
 
 test_data1 = [Entity('Q15', [Claim(31, 'wikibase-entityid', 'Q5107'),

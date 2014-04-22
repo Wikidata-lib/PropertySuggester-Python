@@ -1,7 +1,7 @@
 import csv
 
 
-def create_pair_csv(table, out, delimiter=";"):
+def create_pair_csv(table, out, delimiter=","):
     """
     @type table: dict[int, dict]
     @type out: file or StringIO.StringIO

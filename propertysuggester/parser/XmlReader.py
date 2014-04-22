@@ -10,7 +10,7 @@ with open("file.csv", "r") as f:
 import multiprocessing
 import traceback
 import signal
-from propertysuggester.utils.datatypes import Claim, Entity
+from propertysuggester.utils.datamodel import Claim, Entity
 
 try:
     import ujson as json

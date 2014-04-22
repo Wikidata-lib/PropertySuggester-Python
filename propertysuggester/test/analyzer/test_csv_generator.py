@@ -7,7 +7,7 @@ from testtools.matchers import Equals
 from propertysuggester.analyzer import CsvGenerator
 
 
-class SqlGeneratorTest(TestCase):
+class CsvGeneratorTest(TestCase):
     def setUp(self):
         TestCase.setUp(self)
         self.file = StringIO()
@@ -17,9 +17,9 @@ class SqlGeneratorTest(TestCase):
         CsvGenerator.create_pair_csv(table, self.file)
 
         self.file.seek(0)
-        self.assertThat(self.file.readline().strip(), Equals("pid1;pid2;count;probability"))
+        self.assertThat(self.file.readline().strip(), Equals("pid1,pid2,count,probability"))
         prob = 5.0 / 8.0
-        self.assertThat(self.file.readline().strip(), Equals("1;2;5;{0}".format(prob)))
+        self.assertThat(self.file.readline().strip(), Equals("1,2,5,{0}".format(prob)))
 
 
 if __name__ == '__main__':

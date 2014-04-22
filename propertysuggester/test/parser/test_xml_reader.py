@@ -7,7 +7,7 @@ from testtools.matchers import *
 
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import XmlReader
-from propertysuggester.utils.datatypes import Claim
+from propertysuggester.utils.datamodel import Claim
 
 
 class XmlReaderTest(AbstractUniverseTest):

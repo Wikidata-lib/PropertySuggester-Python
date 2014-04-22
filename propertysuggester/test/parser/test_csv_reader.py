@@ -16,3 +16,11 @@ class CsvReaderTest(AbstractUniverseTest):
         out.seek(0)
         self.result = list(CsvReader.read_csv(out))
 
+
+class CsvReaderTest2(AbstractUniverseTest):
+    def testInvalidRowThrowsException(self):
+        f = StringIO()
+        f.writelines(["a,b"])
+        f.seek(0)
+
+        self.assertRaises(ValueError, lambda: list(CsvReader.read_csv(f)))

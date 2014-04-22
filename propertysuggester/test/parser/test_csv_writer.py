@@ -8,7 +8,7 @@ from testtools.matchers import *
 
 from propertysuggester.parser import XmlReader
 from propertysuggester.parser import CsvWriter
-from propertysuggester.utils.datatypes import Entity, Claim
+from propertysuggester.utils.datamodel import Entity, Claim
 
 test_data = [Entity('Q51', [Claim(31, 'wikibase-entityid', 'Q5107'),
                             Claim(373, 'string', 'Europe')])]

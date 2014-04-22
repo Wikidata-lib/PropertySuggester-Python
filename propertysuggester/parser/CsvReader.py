@@ -9,7 +9,7 @@ with open("file.csv", "r") as f:
 """
 import csv
 
-from propertysuggester.utils.datatypes import Claim, Entity
+from propertysuggester.utils.datamodel import Claim, Entity
 
 
 def read_csv(input_file, delimiter=","):
@@ -22,12 +22,12 @@ def read_csv(input_file, delimiter=","):
     claims = []
     csv_reader = csv.reader(input_file, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
 
-    for row in csv_reader:
+    for row_count, row in enumerate(csv_reader):
         if len(row) != 4:
-            print "error: {0}".format(row)
+            raise ValueError("Error in line {0}: {1}".format(row_count, row))
         title, prop, datatype, value = row
         if current_title != title:
-            if not current_title is None:
+            if current_title is not None:
                 yield Entity(current_title, claims)
             current_title = title
             claims = []
@@ -36,3 +36,4 @@ def read_csv(input_file, delimiter=","):
     if not current_title is None:
         yield Entity(current_title, claims)
 
+    return

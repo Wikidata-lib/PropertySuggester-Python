@@ -1,6 +1,6 @@
 import csv
 
-from propertysuggester.utils.datatypes import Entity
+from propertysuggester.utils.datamodel import Entity
 
 
 def write_csv(entities, output_file, delimiter=","):
