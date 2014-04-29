@@ -17,9 +17,9 @@ class CsvGeneratorTest(TestCase):
         CsvGenerator.create_pair_csv(table, self.file)
 
         self.file.seek(0)
-        self.assertThat(self.file.readline().strip(), Equals("pid1,pid2,count,probability"))
+        self.assertThat(self.file.readline().strip(), Equals("pid1,qid1,pid2,count,probability,context"))
         prob = 5.0 / 8.0
-        self.assertThat(self.file.readline().strip(), Equals("1,2,5,{0}".format(prob)))
+        self.assertThat(self.file.readline().strip(), Equals("1,,2,5,{0},item".format(prob)))
 
 
 if __name__ == '__main__':
