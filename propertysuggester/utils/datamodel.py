@@ -1,5 +1,3 @@
-
-
 class Entity:
     def __init__(self, name, claims):
         """
@@ -16,8 +14,10 @@ class Entity:
         return "title: {0} claims: {1}".format(self.title, map(str, self.claims))
 
 
+
 class Claim:
-    def __init__(self, property_id, datatype, value):
+
+    def __init__(self, property_id, datatype, value, qualifier = [], references = []):
         """
         @type property_id: int
         @type datatype: str
@@ -26,6 +26,9 @@ class Claim:
         self.property_id = property_id
         self.datatype = datatype
         self.value = value
+
+        self.qualifier = qualifier
+        self.references = references
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__

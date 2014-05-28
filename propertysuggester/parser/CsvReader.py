@@ -7,10 +7,7 @@ with open("file.csv", "r") as f:
         do_things()
 
 """
-import csv
-
-from propertysuggester.utils.datamodel import Claim, Entity
-
+import cPickle as pickle
 
 def read_csv(input_file, delimiter=","):
     """
@@ -18,22 +15,11 @@ def read_csv(input_file, delimiter=","):
     @type input_file: file or StringIO.StringIO
     @type delimiter: str
     """
-    current_title = None
-    claims = []
-    csv_reader = csv.reader(input_file, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
 
-    for row_count, row in enumerate(csv_reader):
-        if len(row) != 4:
-            raise ValueError("Error in line {0}: {1}".format(row_count, row))
-        title, prop, datatype, value = row
-        if current_title != title:
-            if current_title is not None:
-                yield Entity(current_title, claims)
-            current_title = title
-            claims = []
-        claims.append(Claim(int(prop), datatype, value))
-
-    if not current_title is None:
-        yield Entity(current_title, claims)
+    while True:
+        try:
+            yield pickle.load(input_file)
+        except EOFError:
+            break
 
     return

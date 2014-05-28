@@ -1,7 +1,4 @@
-import csv
-
-from propertysuggester.utils.datamodel import Entity
-
+import cPickle as pickle
 
 def write_csv(entities, output_file, delimiter=","):
     """
@@ -9,10 +6,6 @@ def write_csv(entities, output_file, delimiter=","):
     @type output_file: file or StringIO.StringIO
     @type delimiter: str
     """
-    csv_writer = csv.writer(output_file, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
 
     for entity in entities:
-        for claim in entity.claims:
-            row = (entity.title.encode("utf-8"), claim.property_id, claim.datatype.encode("utf-8"), claim.value.encode("utf-8"))
-            csv_writer.writerow(row)
-
+        pickle.dump(entity, output_file, protocol=2)

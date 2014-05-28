@@ -89,31 +89,37 @@ def _process_json((title, json_string)):
         return Entity(title, [])
 
     claims = []
-    for claim in data["claims"]:
-        claim = claim["m"]
-        property_id = claim[1]
-        if claim[0] == "value":
-            datatype = claim[2]
-            if datatype == "string":
-                value = claim[3]
-            elif datatype == "wikibase-entityid":
-                value = "Q" + str(claim[3]["numeric-id"])
-            elif datatype == "time":
-                value = claim[3]["time"]
-            elif datatype == "quantity":
-                value = claim[3]["amount"]
-            elif datatype == "globecoordinate":
-                value = "N{0}, E{1}".format(claim[3]["latitude"], claim[3]["longitude"])
-            elif datatype == "bad":
-                # for example in Q2241
-                continue
-            else:
-                print "WARNING unknown wikidata datatype: %s" % datatype
-                continue
-        else:  # novalue, somevalue, ...
-            datatype = "unknown"
-            value = claim[0]
+    for statement in data["claims"]:
+        claimJson = statement["m"]
 
-        claims.append(Claim(property_id, datatype, value))
+        references = filter(lambda x: x != None, (_json_claim_to_object(a) for i in statement["refs"] for a in i))
+        qualifiers = filter(lambda x: x != None, (_json_claim_to_object(i) for i in statement["q"   ]))
+        claim = _json_claim_to_object(claimJson, references, qualifiers)
+        if claim: claims.append(claim)
+
     return Entity(title, claims)
 
+def _json_claim_to_object(claimJson, references = None, qualifiers = None ):
+    if claimJson[0] == "value":
+        datatype = claimJson[2]
+        if datatype == "string":
+            value = claimJson[3]
+        elif datatype == "wikibase-entityid":
+            value = "Q" + str(claimJson[3]["numeric-id"])
+        elif datatype == "time":
+            value = claimJson[3]["time"]
+        elif datatype == "quantity":
+            value = claimJson[3]["amount"]
+        elif datatype == "globecoordinate":
+            value = "N{0}, E{1}".format(claimJson[3]["latitude"], claimJson[3]["longitude"])
+        elif datatype == "bad":
+            # for example in Q2241
+            return None
+        else:
+            print "WARNING unknown wikidata datatype: %s" % datatype
+            return None
+    else:  # novalue, somevalue, ...
+        datatype = "unknown"
+        value = claimJson[0]
+    property_id = claimJson[1]
+    return Claim(property_id, datatype, value, references, qualifiers)

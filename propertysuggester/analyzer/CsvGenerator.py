@@ -11,12 +11,19 @@ def create_pair_csv(table, out, delimiter=","):
     print "properties: {0}".format(len(table))
 
     csv_writer.writerow(("pid1", "qid1", "pid2", "count", "probability", "context"))
+
+    for key, context in enumerate(["item", "qualifier", "reference"]):
+        _write_entries(table[key], csv_writer, context)
+
+
+def _write_entries(table, csv_writer, context):
+    print "Writing entries with context " + context
     rowcount = 0
     for pid1, row in table.iteritems():
         for pid2, value in row.iteritems():
             if pid1 != pid2 and isinstance(pid2, int) and value > 0:  # "appearances" is in the same table, ignore them
                 probability = value/float(row["appearances"])
-                csv_writer.writerow((pid1, '', pid2, value, probability, 'item'))
+                csv_writer.writerow((pid1, '', pid2, value, probability, context))
                 rowcount += 1
                 if not rowcount % 1000:
                     print "rows {0}".format(rowcount)
