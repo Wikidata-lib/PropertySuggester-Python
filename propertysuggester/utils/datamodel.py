@@ -17,7 +17,7 @@ class Entity:
 
 class Claim:
 
-    def __init__(self, property_id, datatype, value, qualifier = [], references = []):
+    def __init__(self, property_id, datatype, value, references=[], qualifier=[]):
         """
         @type property_id: int
         @type datatype: str

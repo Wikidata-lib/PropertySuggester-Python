@@ -94,12 +94,12 @@ def _process_json((title, json_string)):
 
         references = filter(lambda x: x != None, (_json_claim_to_object(a) for i in statement["refs"] for a in i))
         qualifiers = filter(lambda x: x != None, (_json_claim_to_object(i) for i in statement["q"   ]))
-        claim = _json_claim_to_object(claimJson, references, qualifiers)
+        claim = _json_claim_to_object(claimJson, references , qualifiers)
         if claim: claims.append(claim)
 
     return Entity(title, claims)
 
-def _json_claim_to_object(claimJson, references = None, qualifiers = None ):
+def _json_claim_to_object(claimJson, references=[], qualifiers=[]):
     if claimJson[0] == "value":
         datatype = claimJson[2]
         if datatype == "string":

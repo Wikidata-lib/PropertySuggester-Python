@@ -41,8 +41,8 @@ def _count_property_references_appearances(claim, table_ref):
         if not claim.property_id in table_ref:
             table_ref[claim.property_id]["type"] = claim.datatype
         table_ref[claim.property_id]["appearances"] += 1
-        for q in claim.qualifier:
-            table_ref[claim.property_id][q.property_id] += 1
+        for r in claim.references:
+            table_ref[claim.property_id][r.property_id] += 1
 
 
 def _get_property_types(entity, table):
