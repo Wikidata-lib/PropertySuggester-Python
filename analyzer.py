@@ -16,8 +16,8 @@ if __name__ == "__main__":
 
     start = time.time()
     print "computing table"
-    t = TableGenerator.compute_table(CsvReader.read_csv(args.input))
+    t, q, r = TableGenerator.compute_table(CsvReader.read_csv(args.input))
     print "writing csv"
-    CsvGenerator.create_pair_csv(t, args.output)
+    CsvGenerator.create_pair_csv(t, q, r, args.output)
     print "done - {0:.2f}s".format(time.time()-start)
     print "now import this csv file with PropertySuggester/maintenance/UpdateTable.php"

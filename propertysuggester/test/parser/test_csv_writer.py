@@ -8,10 +8,10 @@ from testtools.matchers import *
 
 from propertysuggester.parser import XmlReader
 from propertysuggester.parser import CsvWriter
-from propertysuggester.utils.datamodel import Entity, Claim
+from propertysuggester.utils.datamodel import Entity, Claim, Snak
 
-test_data = [Entity('Q51', [Claim(31, 'wikibase-entityid', 'Q5107'),
-                            Claim(373, 'string', 'Europe')])]
+test_data = [Entity('Q51', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
+                            Claim(Snak(373, 'string', 'Europe'))])]
 
 
 class CsvWriterTest(TestCase):
@@ -24,10 +24,10 @@ class CsvWriterTest(TestCase):
         out.seek(0)
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,31,wikibase-entityid,Q5107"))
+        self.assertThat(line.strip(), Equals("Q51,claim,31,wikibase-entityid,Q5107"))
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,373,string,Europe"))
+        self.assertThat(line.strip(), Equals("Q51,claim,373,string,Europe"))
 
         self.assertThat(out.read(), Equals(""))
 
@@ -38,7 +38,7 @@ class CsvWriterTest(TestCase):
         CsvWriter.write_csv(xml, out)
 
         out.seek(0)
-        self.assertThat(len(out.readlines()), Equals(3679))
+        self.assertThat(len(out.readlines()), Equals(5627))
 
 
 if __name__ == '__main__':

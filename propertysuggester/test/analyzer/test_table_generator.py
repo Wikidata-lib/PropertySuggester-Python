@@ -4,16 +4,16 @@ from testtools import TestCase
 from testtools.matchers import *
 
 from propertysuggester.analyzer import TableGenerator
-from propertysuggester.utils.datamodel import Entity, Claim
+from propertysuggester.utils.datamodel import Entity, Claim, Snak
 
 
-test_data1 = [Entity('Q15', [Claim(31, 'wikibase-entityid', 'Q5107'),
-                             Claim(373, 'string', 'Africa')]),
-              Entity('Q16', [Claim(31, 'wikibase-entityid', 'Q384')])]
+test_data1 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
+                             Claim(Snak(373, 'string', 'Africa'))]),
+              Entity('Q16', [Claim(Snak(31, 'wikibase-entityid', 'Q384'))])]
 
-test_data2 = [Entity('Q15', [Claim(31, 'wikibase-entityid', 'Q5107'),
-                             Claim(373, 'string', 'Africa'),
-                             Claim(373, 'string', 'Europe')])]
+test_data2 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
+                             Claim(Snak(373, 'string', 'Africa')),
+                             Claim(Snak(373, 'string', 'Europe'))])]
 
 
 class TableGeneratorTest(TestCase):
@@ -21,7 +21,7 @@ class TableGeneratorTest(TestCase):
         TestCase.setUp(self)
 
     def test_table_generator(self):
-        table = TableGenerator.compute_table(test_data1)
+        table, _, _ = TableGenerator.compute_table(test_data1)
         self.assertThat(table, ContainsAll((31, 373)))
 
         self.assertThat(table[31]['appearances'], Equals(2))
@@ -35,7 +35,7 @@ class TableGeneratorTest(TestCase):
         self.assertThat(table[373][31], Equals(1))
 
     def test_table_with_multiple_occurance(self):
-        table = TableGenerator.compute_table(test_data2)
+        table, _, _ = TableGenerator.compute_table(test_data2)
 
         self.assertThat(table[31]['appearances'], Equals(1))
         self.assertThat(table[31]['type'], Equals('wikibase-entityid'))

@@ -11,51 +11,32 @@ def compute_table(entities):
     table = defaultdict(lambda: defaultdict(int))
     table_qua = defaultdict(lambda: defaultdict(int))
     table_ref = defaultdict(lambda: defaultdict(int))
+
+    get_snak = lambda claim: claim.mainsnak
+
     for i, entity in enumerate(entities):
         if i % 100000 == 0 and i > 0:
             print "entities {0}".format(i)
 
-        _get_property_types(entity, table)
+        _get_property_types(entity, get_snak, table)
+        distinct_ids = set(get_snak(claim).property_id for claim in entity.claims)
+        _count_occurances(distinct_ids, table)
 
-        for claim in entity.claims:
-            _count_property_qualifier_appearances(claim, table_qua)
-            _count_property_references_appearances(claim, table_ref)
-
-        distinct_ids = set(claim.property_id for claim in entity.claims)
-        _count_ids(distinct_ids, table)
-
-    return [table, table_qua, table_ref]
+    return table, table_qua, table_ref
 
 
-def _count_property_qualifier_appearances(claim, table_qua):
-    if len(claim.qualifier) > 0:
-        if not claim.property_id in table_qua:
-            table_qua[claim.property_id]["type"] = claim.datatype
-        table_qua[claim.property_id]["appearances"] += 1
-        for q in claim.qualifier:
-            table_qua[claim.property_id][q.property_id] += 1
-
-
-def _count_property_references_appearances(claim, table_ref):
-    if len(claim.references) > 0:
-        if not claim.property_id in table_ref:
-            table_ref[claim.property_id]["type"] = claim.datatype
-        table_ref[claim.property_id]["appearances"] += 1
-        for r in claim.references:
-            table_ref[claim.property_id][r.property_id] += 1
-
-
-def _get_property_types(entity, table):
+def _get_property_types(entity, get_snak, table):
     """
     @type entity: Entity
     @type table: dict[int, dict]
     """
     for claim in entity.claims:
-        if not claim.property_id in table or table[claim.property_id]["type"] == "unknown":
-            table[claim.property_id]["type"] = claim.datatype
+        snak = get_snak(claim)
+        if not snak.property_id in table or table[snak.property_id]["type"] == "unknown":
+            table[snak.property_id]["type"] = snak.datatype
 
 
-def _count_ids(distinct_ids, table):
+def _count_occurances(distinct_ids, table):
     """
     @type distinct_ids: set[int]
     @type table: dict[int, dict]

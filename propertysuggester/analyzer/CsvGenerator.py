@@ -1,7 +1,7 @@
 import csv
 
 
-def create_pair_csv(table, out, delimiter=","):
+def create_pair_csv(table, table_qualifier, table_references, out, delimiter=","):
     """
     @type table: dict[int, dict]
     @type out: file or StringIO.StringIO
@@ -12,8 +12,9 @@ def create_pair_csv(table, out, delimiter=","):
 
     csv_writer.writerow(("pid1", "qid1", "pid2", "count", "probability", "context"))
 
-    for key, context in enumerate(["item", "qualifier", "reference"]):
-        _write_entries(table[key], csv_writer, context)
+    _write_entries(table, csv_writer, "item")
+    _write_entries(table_qualifier, csv_writer, "qualifier")
+    _write_entries(table_references, csv_writer, "reference")
 
 
 def _write_entries(table, csv_writer, context):

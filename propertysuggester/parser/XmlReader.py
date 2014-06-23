@@ -10,7 +10,7 @@ with open("file.csv", "r") as f:
 import multiprocessing
 import traceback
 import signal
-from propertysuggester.utils.datamodel import Claim, Entity
+from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
 try:
     import ujson as json
@@ -23,7 +23,6 @@ try:
 except ImportError:
     print "cElementTree not found"
     import xml.etree.ElementTree as ElementTree
-
 
 NS = "http://www.mediawiki.org/xml/export-0.8/"
 title_tag = "{" + NS + "}" + "title"
@@ -90,28 +89,39 @@ def _process_json((title, json_string)):
 
     claims = []
     for statement in data["claims"]:
-        claimJson = statement["m"]
+        claim_json = statement["m"]
+        references = []
+        for i in statement["refs"]:
+            for a in i:
+                ref = _parse_json_snak(a)
+                if ref:
+                    references.append(ref)
+        qualifiers = []
+        for q in statement["q"]:
+                qualifier = _parse_json_snak(q)
+                if qualifier:
+                    qualifiers.append(qualifier)
 
-        references = filter(lambda x: x != None, (_json_claim_to_object(a) for i in statement["refs"] for a in i))
-        qualifiers = filter(lambda x: x != None, (_json_claim_to_object(i) for i in statement["q"   ]))
-        claim = _json_claim_to_object(claimJson, references , qualifiers)
-        if claim: claims.append(claim)
+        claim = _parse_json_snak(claim_json)
+        if claim:
+            claims.append(Claim(claim, qualifiers, references))
 
     return Entity(title, claims)
 
-def _json_claim_to_object(claimJson, references=[], qualifiers=[]):
-    if claimJson[0] == "value":
-        datatype = claimJson[2]
+
+def _parse_json_snak(claim_json):
+    if claim_json[0] == "value":
+        datatype = claim_json[2]
         if datatype == "string":
-            value = claimJson[3]
+            value = claim_json[3]
         elif datatype == "wikibase-entityid":
-            value = "Q" + str(claimJson[3]["numeric-id"])
+            value = "Q" + str(claim_json[3]["numeric-id"])
         elif datatype == "time":
-            value = claimJson[3]["time"]
+            value = claim_json[3]["time"]
         elif datatype == "quantity":
-            value = claimJson[3]["amount"]
+            value = claim_json[3]["amount"]
         elif datatype == "globecoordinate":
-            value = "N{0}, E{1}".format(claimJson[3]["latitude"], claimJson[3]["longitude"])
+            value = "N{0}, E{1}".format(claim_json[3]["latitude"], claim_json[3]["longitude"])
         elif datatype == "bad":
             # for example in Q2241
             return None
@@ -120,6 +130,6 @@ def _json_claim_to_object(claimJson, references=[], qualifiers=[]):
             return None
     else:  # novalue, somevalue, ...
         datatype = "unknown"
-        value = claimJson[0]
-    property_id = claimJson[1]
-    return Claim(property_id, datatype, value, references, qualifiers)
+        value = claim_json[0]
+    property_id = claim_json[1]
+    return Snak(property_id, datatype, value)
