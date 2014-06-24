@@ -33,6 +33,11 @@ class Claim:
 
 class Snak:
     def __init__(self, property_id, datatype, value):
+        """
+        @type property_id: int
+        @type datatype: string
+        @type value: string
+        """
         self.property_id = property_id
         self.datatype = datatype
         self.value = value
