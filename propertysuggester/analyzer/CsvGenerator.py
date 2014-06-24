@@ -26,5 +26,5 @@ def _write_entries(table, csv_writer, context):
                 probability = value/float(row["appearances"])
                 csv_writer.writerow((pid1, '', pid2, value, probability, context))
                 rowcount += 1
-                if not rowcount % 1000:
+                if rowcount % 1000 == 0:
                     print "rows {0}".format(rowcount)

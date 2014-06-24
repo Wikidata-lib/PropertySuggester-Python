@@ -89,7 +89,6 @@ def _process_json((title, json_string)):
 
     claims = []
     for statement in data["claims"]:
-        claim_json = statement["m"]
         references = []
         for i in statement["refs"]:
             for a in i:
@@ -98,11 +97,11 @@ def _process_json((title, json_string)):
                     references.append(ref)
         qualifiers = []
         for q in statement["q"]:
-                qualifier = _parse_json_snak(q)
-                if qualifier:
-                    qualifiers.append(qualifier)
+            qualifier = _parse_json_snak(q)
+            if qualifier:
+                qualifiers.append(qualifier)
 
-        claim = _parse_json_snak(claim_json)
+        claim = _parse_json_snak(statement["m"])
         if claim:
             claims.append(Claim(claim, qualifiers, references))
 

@@ -5,9 +5,6 @@ from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
 
 class AbstractUniverseTest(TestCase):
-    def setUp(self):
-        TestCase.setUp(self)
-
     def assert_universe(self, result):
         self.assertThat(result, HasLength(1))
         q1 = result[0]

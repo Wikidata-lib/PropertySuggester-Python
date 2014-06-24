@@ -7,7 +7,7 @@ from testtools.matchers import *
 
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import XmlReader
-from propertysuggester.utils.datamodel import Claim, Snak
+from propertysuggester.utils.datamodel import Claim, Snak, Entity
 
 
 class XmlReaderTest(AbstractUniverseTest):
@@ -26,6 +26,12 @@ class XmlReaderTest(AbstractUniverseTest):
         self.assertThat(q9351.claims, Contains(Claim(Snak(156, "wikibase-entityid", "Q1647331"))))
         self.assertThat(q9351.claims, Contains(Claim(Snak(1112, "quantity", "+25"))))
 
+    def test_special_cases(self):
+        self.assertThat(XmlReader._process_json(("Q1", "{}")), Equals(Entity("Q1", [])))
+        self.assertThat(XmlReader._process_json(("Q1", '{"claims":[{"m":["value","","bad"], "refs":[],"q":[]}]}')),
+                        Equals(Entity("Q1", [])))
+        self.assertThat(XmlReader._process_json(("Q1", '{"claims":[{"m":["value","","unknown"], "refs":[],"q":[]}]}')),
+                        Equals(Entity("Q1", [])))
 
 class MultiprocessingBigTest(TestCase):
     def test_simple_multiprocessing(self):

@@ -1,4 +1,3 @@
-
 from collections import defaultdict
 from propertysuggester.utils.datamodel import Entity
 
@@ -48,6 +47,7 @@ def _count_occurances(distinct_ids, table):
         for pid2 in distinct_ids:
             if pid1 != pid2:
                 table[pid1][pid2] += 1
+
 
 def _count_special_appearances(claim, get_special, special_table):
     """
