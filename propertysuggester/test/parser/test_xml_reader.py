@@ -11,10 +11,10 @@ from propertysuggester.utils.datamodel import Claim, Snak
 
 
 class XmlReaderTest(AbstractUniverseTest):
-    def setUp(self):
-        TestCase.setUp(self)
+    def test_universe(self):
         with gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz"), "r") as f:
-            self.result = list(XmlReader.read_xml(f))
+            result = list(XmlReader.read_xml(f))
+        self.assert_universe(result)
 
     def test_updated_dump(self):
         with gzip.open(resource_filename(__name__, "Wikidata-Q9351.xml.gz"), "r") as f:

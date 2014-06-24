@@ -2,7 +2,6 @@ from StringIO import StringIO
 import gzip
 from pkg_resources import resource_filename
 
-import unittest
 from testtools import TestCase
 from testtools.matchers import *
 
@@ -11,7 +10,9 @@ from propertysuggester.parser import CsvWriter
 from propertysuggester.utils.datamodel import Entity, Claim, Snak
 
 test_data = [Entity('Q51', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
-                            Claim(Snak(373, 'string', 'Europe'))])]
+                            Claim(Snak(373, 'string', 'Europe'),
+                                  [Snak(1, 'string', 'qual')],
+                                  [Snak(2, 'string', 'ref')])])]
 
 
 class CsvWriterTest(TestCase):
@@ -29,6 +30,12 @@ class CsvWriterTest(TestCase):
         line = out.readline()
         self.assertThat(line.strip(), Equals("Q51,claim,373,string,Europe"))
 
+        line = out.readline()
+        self.assertThat(line.strip(), Equals("Q51,qualifier,1,string,qual"))
+
+        line = out.readline()
+        self.assertThat(line.strip(), Equals("Q51,reference,2,string,ref"))
+
         self.assertThat(out.read(), Equals(""))
 
     def test_write_big_csv(self):
@@ -39,8 +46,4 @@ class CsvWriterTest(TestCase):
 
         out.seek(0)
         self.assertThat(len(out.readlines()), Equals(5627))
-
-
-if __name__ == '__main__':
-    unittest.main()
 
