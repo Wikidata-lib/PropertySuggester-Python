@@ -1,4 +1,5 @@
 from collections import defaultdict
+import math
 from propertysuggester.analyzer.impl.Analyzer import Analyzer
 from propertysuggester.analyzer.rule import Rule
 
@@ -22,10 +23,13 @@ class ItemAnalyzer(Analyzer):
 
     def get_rules(self):
         rules = []
+        totalpropertycount = len(self.propertyOccurances)
         for pid1, row in self.coOccurances.iteritems():
+            sharedpids = len(row)
+            idf = math.log(totalpropertycount/float(sharedpids))
             pid1count = self.propertyOccurances[pid1]
             for pid2, paircount in row.iteritems():
                 if paircount > 0:
-                    probability = (paircount/float(pid1count))
+                    probability = (paircount/float(pid1count)) * idf
                     rules.append(Rule(pid1, None, pid2, paircount, probability, "item"))
         return rules
