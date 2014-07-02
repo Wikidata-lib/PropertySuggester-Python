@@ -4,7 +4,7 @@ from propertysuggester.analyzer.rule import Rule
 from propertysuggester.utils.datamodel import Entity
 
 
-def compute_rules(entities):
+def compute_rules(entities, min_probability=0.01):
     """
     @type entities: collections.Iterable[Entity]
     @return: list[Rule]
@@ -18,7 +18,7 @@ def compute_rules(entities):
         for analyzer in analyzers:
             analyzer.process(entity)
 
-    rules = itertools.chain(*(a.get_rules() for a in analyzers))
+    rules = filter(lambda rule: rule.probability > min_probability, itertools.chain(*(a.get_rules() for a in analyzers)))
     return rules
 
 
@@ -47,7 +47,7 @@ class Analyzer:
             for pid2, value in row.iteritems():
                 if value > 0:
                     probability = value/float(pid1count)
-                    rules.append(Rule(pid1, None, pid2, pid1count, probability, self.context))
+                    rules.append(Rule(pid1, None, pid2, value, probability, self.context))
         return rules
 
 
