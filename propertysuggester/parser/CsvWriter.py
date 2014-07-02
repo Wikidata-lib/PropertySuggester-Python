@@ -15,7 +15,7 @@ def write_csv(entities, output_file, delimiter=","):
         for claim in entity.claims:
             title = entity.title.encode("utf-8")
             write_row(csv_writer, title, "claim", claim.mainsnak)
-            for q in claim.qualifier:
+            for q in claim.qualifiers:
                 write_row(csv_writer, title, "qualifier", q)
             for ref in claim.references:
                 write_row(csv_writer, title, "reference", ref)

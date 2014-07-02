@@ -15,14 +15,14 @@ class Entity:
 
 
 class Claim:
-    def __init__(self, mainsnak, qualifier=None, references=None):
+    def __init__(self, mainsnak, qualifiers=None, references=None):
         """
         @type mainsnak: Snak
-        @type qualifier: list[Snak]
+        @type qualifiers: list[Snak]
         @type references: list[Snak]
         """
         self.mainsnak = mainsnak
-        self.qualifier = qualifier or []
+        self.qualifiers = qualifiers or []
         self.references = references or []
 
     def __eq__(self, other):

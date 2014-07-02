@@ -28,7 +28,7 @@ def read_csv(input_file, delimiter=","):
             print "error: {0}".format(row)
         title, typ, property_id, datatype, value = row
         if current_title != title:
-            if not current_title is None:
+            if current_title is not None:
                 yield Entity(current_title, claims)
             current_title = title
             claims = []
@@ -39,7 +39,7 @@ def read_csv(input_file, delimiter=","):
         elif typ == 'reference':
             current_claim.references.append(snak)
         elif typ == 'qualifier':
-            current_claim.qualifier.append(snak)
+            current_claim.qualifiers.append(snak)
         else:
             print "unknown type: {0}".format(typ)
 
