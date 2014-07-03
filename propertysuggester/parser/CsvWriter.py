@@ -13,6 +13,19 @@ def write_csv(entities, output_file, delimiter=","):
 
     for entity in entities:
         for claim in entity.claims:
-            row = (entity.title.encode("utf-8"), claim.property_id, claim.datatype.encode("utf-8"), claim.value.encode("utf-8"))
-            csv_writer.writerow(row)
+            title = entity.title.encode("utf-8")
+            write_row(csv_writer, title, "claim", claim.mainsnak)
+            for q in claim.qualifiers:
+                write_row(csv_writer, title, "qualifier", q)
+            for ref in claim.references:
+                write_row(csv_writer, title, "reference", ref)
+
+def write_row(csv_writer, title, typ, snak):
+    """
+    @param csv_writer:
+    @param snak: Snak
+    @return:
+    """
+    row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"), snak.value.encode("utf-8"))
+    csv_writer.writerow(row)
 

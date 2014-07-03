@@ -10,7 +10,7 @@ with open("file.csv", "r") as f:
 import multiprocessing
 import traceback
 import signal
-from propertysuggester.utils.datamodel import Claim, Entity
+from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
 try:
     import ujson as json
@@ -23,7 +23,6 @@ try:
 except ImportError:
     print "cElementTree not found"
     import xml.etree.ElementTree as ElementTree
-
 
 NS = "http://www.mediawiki.org/xml/export-0.8/"
 title_tag = "{" + NS + "}" + "title"
@@ -89,31 +88,50 @@ def _process_json((title, json_string)):
         return Entity(title, [])
 
     claims = []
-    for claim in data["claims"]:
-        claim = claim["m"]
-        property_id = claim[1]
-        if claim[0] == "value":
-            datatype = claim[2]
-            if datatype == "string":
-                value = claim[3]
-            elif datatype == "wikibase-entityid":
-                value = "Q" + str(claim[3]["numeric-id"])
-            elif datatype == "time":
-                value = claim[3]["time"]
-            elif datatype == "quantity":
-                value = claim[3]["amount"]
-            elif datatype == "globecoordinate":
-                value = "N{0}, E{1}".format(claim[3]["latitude"], claim[3]["longitude"])
-            elif datatype == "bad":
-                # for example in Q2241
-                continue
-            else:
-                print "WARNING unknown wikidata datatype: %s" % datatype
-                continue
-        else:  # novalue, somevalue, ...
-            datatype = "unknown"
-            value = claim[0]
+    for statement in data["claims"]:
+        references = []
+        for i in statement["refs"]:
+            for a in i:
+                ref = _parse_json_snak(a)
+                if ref:
+                    references.append(ref)
+        qualifiers = []
+        for q in statement["q"]:
+            qualifier = _parse_json_snak(q)
+            if qualifier:
+                qualifiers.append(qualifier)
 
-        claims.append(Claim(property_id, datatype, value))
+        claim = _parse_json_snak(statement["m"])
+        if claim:
+            claims.append(Claim(claim, qualifiers, references))
+
     return Entity(title, claims)
 
+
+def _parse_json_snak(claim_json):
+    if claim_json[0] == "value":
+        datatype = claim_json[2]
+        if datatype == "string":
+            value = claim_json[3]
+        elif datatype == "wikibase-entityid":
+            if claim_json[3]["entity-type"] == "item":
+                value = "Q" + str(claim_json[3]["numeric-id"])
+            else:
+                print "WARNING unknown entitytype: {0}".format(claim_json[3]["entity-type"])
+        elif datatype == "time":
+            value = claim_json[3]["time"]
+        elif datatype == "quantity":
+            value = claim_json[3]["amount"]
+        elif datatype == "globecoordinate":
+            value = "N{0}, E{1}".format(claim_json[3]["latitude"], claim_json[3]["longitude"])
+        elif datatype == "bad":
+            # for example in Q2241
+            return None
+        else:
+            print "WARNING unknown wikidata datatype: %s" % datatype
+            return None
+    else:  # novalue, somevalue, ...
+        datatype = "unknown"
+        value = claim_json[0]
+    property_id = claim_json[1]
+    return Snak(property_id, datatype, value)

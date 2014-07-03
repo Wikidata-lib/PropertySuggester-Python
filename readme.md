@@ -26,3 +26,9 @@ nosetests
 
 [![Build Status](https://travis-ci.org/Wikidata-lib/PropertySuggester-Python.png?branch=master)](https://travis-ci.org/Wikidata-lib/PropertySuggester-Python)
 [![Coverage Status](https://coveralls.io/repos/Wikidata-lib/PropertySuggester-Python/badge.png?branch=master)](https://coveralls.io/r/Wikidata-lib/PropertySuggester-Python)
+
+
+## Release Notes
+
+### 1.0
+* Converts a wikidata dump to a csv file with associationrules between properties
