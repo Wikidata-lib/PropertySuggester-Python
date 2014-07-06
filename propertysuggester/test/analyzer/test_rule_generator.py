@@ -27,12 +27,12 @@ class RuleGeneratorTest(TestCase):
 
     def test_table_generator(self):
         rules = list(RuleGenerator.compute_rules(test_data1))
-        self.assertThat(rules, ContainsAll([Rule(31, None, 373, 1, 0.5, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
+        self.assertThat(rules, ContainsAll([Rule(31, 5107, 373, 1, 0.5, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
 
 
     def test_table_with_multiple_occurance(self):
         rules = list(RuleGenerator.compute_rules(test_data2))
-        self.assertThat(rules, ContainsAll([Rule(31, None, 373, 1, 1.0, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
+        self.assertThat(rules, ContainsAll([Rule(31, 5107, 373, 1, 1.0, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
 
     def test_table_with_qualifier_and_references(self):
         rules = list(RuleGenerator.compute_rules(test_data3))
