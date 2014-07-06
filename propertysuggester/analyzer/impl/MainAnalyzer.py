@@ -11,8 +11,8 @@ class ItemAnalyzer(Analyzer):
         self.pair_occurrences = defaultdict(lambda: defaultdict(int))
     
     def process(self, item):
-        distinct_ids = set(claim.mainsnak.property_id for claim in entity.claims)
-        property_value_pairs = claim.mainsnak.property_id, claim.mainsnak.value for claim in entity.claims
+        distinct_ids = set(claim.mainsnak.property_id for claim in item.claims)
+        property_value_pairs = [(claim.mainsnak.property_id, claim.mainsnak.value) for claim in item.claims]
         self._count_occurrences(distinct_ids, property_value_pairs)
 
     def _count_occurrences(self, distinct_ids, property_value_pairs):
@@ -26,11 +26,12 @@ class ItemAnalyzer(Analyzer):
                     self.pair_occurrences[currentTuple][pid2] += 1
 
         for pid1, value in property_value_pairs:
-            if pid in classiying_property_ids:
-                self.tuple_occurrences[pid, value] += 1
+
+            if pid1 in classiying_property_ids:
+                self.tuple_occurrences[pid1, value[1:]] += 1
                 for pid2 in distinct_ids:
                     if pid1 != pid2:
-                        self.pair_occurrences[pid1, value][pid2] += 1
+                        self.pair_occurrences[pid1, value[1:]][pid2] += 1
 
     def get_rules(self):
         rules = []
