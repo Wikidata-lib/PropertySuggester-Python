@@ -28,10 +28,10 @@ class ItemAnalyzer(Analyzer):
         for pid1, value in property_value_pairs:
 
             if pid1 in classiying_property_ids:
-                self.tuple_occurrences[pid1, value[1:]] += 1
+                self.tuple_occurrences[pid1, int(value[1:])] += 1
                 for pid2 in distinct_ids:
                     if pid1 != pid2:
-                        self.pair_occurrences[pid1, value[1:]][pid2] += 1
+                        self.pair_occurrences[pid1, int(value[1:])][pid2] += 1
 
     def get_rules(self):
         rules = []
