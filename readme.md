@@ -30,5 +30,9 @@ nosetests
 
 ## Release Notes
 
+### 1.1
+* Generate associationrules for qualifier and references
+* Improve ranking to avoid suggestions of human properties
+
 ### 1.0
 * Converts a wikidata dump to a csv file with associationrules between properties
