@@ -2,11 +2,10 @@ from collections import defaultdict
 from propertysuggester.analyzer.impl.Analyzer import Analyzer
 from propertysuggester.analyzer.rule import Rule
 
-classiying_property_ids = [31,279]
-
 class ItemAnalyzer(Analyzer):
-    def __init__(self):
+    def __init__(self, classiying_property_ids = [31,279]):
         Analyzer.__init__(self)
+        self.classiying_pids = classiying_property_ids
         self.tuple_occurrences = defaultdict(int)
         self.pair_occurrences = defaultdict(lambda: defaultdict(int))
     
@@ -17,7 +16,7 @@ class ItemAnalyzer(Analyzer):
 
     def _count_occurrences(self, distinct_ids, property_value_pairs):
         for pid1 in distinct_ids:
-            if pid1 in classiying_property_ids:
+            if pid1 in self.classiying_pids:
                 continue
             currentTuple = (pid1, None)
             self.tuple_occurrences[currentTuple] += 1
@@ -26,8 +25,7 @@ class ItemAnalyzer(Analyzer):
                     self.pair_occurrences[currentTuple][pid2] += 1
 
         for pid1, value in property_value_pairs:
-
-            if pid1 in classiying_property_ids:
+            if pid1 in self.classiying_pids:
                 self.tuple_occurrences[pid1, int(value[1:])] += 1
                 for pid2 in distinct_ids:
                     if pid1 != pid2:

@@ -10,7 +10,8 @@ from propertysuggester.utils.datamodel import Entity, Claim, Snak
 
 test_data1 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
                              Claim(Snak(373, 'string', 'Africa'))]),
-              Entity('Q16', [Claim(Snak(31, 'wikibase-entityid', 'Q384'))])]
+              Entity('Q16', [Claim(Snak(31, 'wikibase-entityid', 'Q5107'))]),
+              Entity('Q17', [Claim(Snak(31, 'wikibase-entityid', 'Q1337'))])]
 
 test_data2 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
                              Claim(Snak(373, 'string', 'Africa')),
