@@ -25,7 +25,7 @@ class ItemAnalyzer(Analyzer):
                     self.pair_occurrences[currentTuple][pid2] += 1
 
         for pid1, value in property_value_pairs:
-            if pid1 in self.classiying_pids:
+            if pid1 in self.classiying_pids and value[1:].isdigit():
                 self.tuple_occurrences[pid1, int(value[1:])] += 1
                 for pid2 in distinct_ids:
                     if pid1 != pid2:
