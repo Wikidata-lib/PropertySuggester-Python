@@ -16,11 +16,11 @@ class CsvReaderTest(AbstractUniverseTest):
     def test_universe(self):
         out = StringIO()
         out.writelines(["Q1,claim,373,string,Universe\n",
-                        "Q1,reference,143,wikibase-entityid,Q328\n"
-                        "Q1,claim,31,wikibase-entityid,Q223557\n",
-                        "Q1,claim,31,wikibase-entityid,Q1088088\n",
-                        "Q1,claim,361,wikibase-entityid,Q3327819\n",
-                        "Q1,qualifier,31,wikibase-entityid,Q41719\n"])
+                        "Q1,reference,143,wikibase-item,Q328\n"
+                        "Q1,claim,31,wikibase-item,Q223557\n",
+                        "Q1,claim,31,wikibase-item,Q1088088\n",
+                        "Q1,claim,361,wikibase-item,Q3327819\n",
+                        "Q1,qualifier,31,wikibase-item,Q41719\n"])
         out.seek(0)
         result = list(CsvReader.read_csv(out))
         self.assert_universe(result)

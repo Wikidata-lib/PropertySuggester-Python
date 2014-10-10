@@ -114,6 +114,7 @@ def _parse_json_snak(claim_json):
         if datatype == "string":
             value = claim_json[3]
         elif datatype == "wikibase-entityid":
+            datatype = "wikibase-item"
             if claim_json[3]["entity-type"] == "item":
                 value = "Q" + str(claim_json[3]["numeric-id"])
             else:

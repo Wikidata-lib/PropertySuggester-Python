@@ -13,5 +13,5 @@ if __name__ == "__main__":
     #parser.add_argument("-p", "--processes", help="Number of processors to use (default 4)", type=int, default=4)
     args = parser.parse_args()
     start = time.time()
-    CsvWriter.write_csv(newJsonReader.process_json(args.input), args.output)
+    CsvWriter.write_csv(JsonReader.read_json(args.input), args.output)
     print "total time: %.2fs" % (time.time() - start)

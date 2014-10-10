@@ -23,7 +23,7 @@ class XmlReaderTest(AbstractUniverseTest):
         self.assertThat(len(result), Equals(1))
         q9351 = result[0]
         self.assertThat(q9351.title, Equals("Q9351"))
-        self.assertThat(q9351.claims, Contains(Claim(Snak(156, "wikibase-entityid", "Q1647331"))))
+        self.assertThat(q9351.claims, Contains(Claim(Snak(156, "wikibase-item", "Q1647331"))))
         self.assertThat(q9351.claims, Contains(Claim(Snak(1112, "quantity", "+25"))))
 
     def test_special_cases(self):
