@@ -1,9 +1,9 @@
 """
-process_json returns a generator that yields Entities)
+read_json returns a generator that yields Entities)
 
 usage:
 with open("file.csv", "r") as f:
-    for entity in process_json(f):
+    for entity in read_json(f):
         do_things()
 
 """
@@ -15,7 +15,7 @@ except ImportError:
     print "ujson not found"
     import json as json
 
-def process_json(input_file):
+def read_json(input_file):
     count = 0
     for jsonline in input_file:
         count += 1 
@@ -27,33 +27,34 @@ def process_json(input_file):
         except ValueError:
             continue
         if data["type"] == "item":
-            title = data["id"]
-            if not "claims" in data:
-                yield Entity(title, [])
-                continue
-            claims = []
-            for prop, statements in data["claims"].iteritems():
-                for statement in statements:
-                    references = []
-                    if "references" in statement:
-                        for prop, snaks in statement["references"][0]["snaks"].iteritems():
-                            for snak in snaks:
-                                ref = _parse_json_snak(snak)
-                                if ref:
-                                    references.append(ref)
-                    qualifiers = []
-                    if "qualifiers" in statement:                            
-                        for prop, snaks in statement["qualifiers"].iteritems():
-                            for snak in snaks: 
-                                qualifier = _parse_json_snak(snak)
-                            if qualifier:
-                                qualifiers.append(qualifier)
-                    claim = _parse_json_snak(statement["mainsnak"])
-                    if claim:
-                        claims.append(Claim(claim, qualifiers, references))
+            yield _process_json(data)
 
-            yield Entity(title, claims)
+def _process_json(data):
+    title = data["id"]
+    if not "claims" in data:
+        return Entity(title, [])
+    claims = []
+    for prop, statements in data["claims"].iteritems():
+        for statement in statements:
+            references = []
+            if "references" in statement:
+                for prop, snaks in statement["references"][0]["snaks"].iteritems():
+                    for snak in snaks:
+                        ref = _parse_json_snak(snak)
+                        if ref:
+                            references.append(ref)
+            qualifiers = []
+            if "qualifiers" in statement:                            
+                for prop, snaks in statement["qualifiers"].iteritems():
+                    for snak in snaks: 
+                        qualifier = _parse_json_snak(snak)
+                    if qualifier:
+                        qualifiers.append(qualifier)
+            claim = _parse_json_snak(statement["mainsnak"])
+            if claim:
+                claims.append(Claim(claim, qualifiers, references))
 
+    return Entity(title, claims)
 
 def _parse_json_snak(claim_json):
     if claim_json["snaktype"] == "value":
@@ -81,5 +82,5 @@ def _parse_json_snak(claim_json):
     else:  # novalue, somevalue, ...
         datatype = "unknown"
         value = claim_json["snaktype"]
-    property_id = claim_json["property"][1:]
+    property_id = int(claim_json["property"][1:])
     return Snak(property_id, datatype, value)
