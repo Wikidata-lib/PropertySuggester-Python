@@ -16,16 +16,20 @@ except ImportError:
     import json as json
 
 def read_json(input_file):
+    """
+    @rtype : collections.Iterable[Entity]
+    @type input_file:  file or GzipFile or StringIO.StringIO
+    """
     count = 0
     for jsonline in input_file:
         count += 1 
         if count % 3000 == 0:
             print "processed %.2fMB" % (input_file.tell() / 1024.0 ** 2)
-        jsonline = jsonline[:-2]
-        try:
-            data = json.loads(jsonline)
-        except ValueError:
-            continue
+
+        jsonline = jsonline.rstrip(",\r\n")
+
+        data = json.loads(jsonline)
+
         if data["type"] == "item":
             yield _process_json(data)
 
