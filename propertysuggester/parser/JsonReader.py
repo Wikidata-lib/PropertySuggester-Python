@@ -77,12 +77,14 @@ def _parse_json_snak(claim_json):
             value = datavalue["amount"]
         elif datatype == "globe-coordinate":
             value = "N{0}, E{1}".format(datavalue["latitude"], datavalue["longitude"])
+        elif datatype == "commonsMedia":
+            value = datavalue
         elif datatype == "bad":
             # for example in Q2241
             return None
         else:
-            #print "WARNING unknown wikidata datatype: %s" % datatype
-            value = "irrelevant"
+            print "WARNING unknown wikidata datatype: %s" % datatype
+            return None
     else:  # novalue, somevalue, ...
         datatype = "unknown"
         value = claim_json["snaktype"]
