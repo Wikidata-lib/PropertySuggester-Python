@@ -28,7 +28,7 @@ class CsvReaderTest(AbstractUniverseTest):
     def test_multiple_entities(self):
         out = StringIO()
         out.writelines(["Q1,claim,373,string,Universe\n",
-                        "Q2,claim,143,wikibase-entityid,Q328\n"])
+                        "Q2,claim,143,wikibase-item,Q328\n"])
         out.seek(0)
         result = list(CsvReader.read_csv(out))
 
