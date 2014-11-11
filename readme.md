@@ -30,6 +30,10 @@ nosetests
 
 ## Release Notes
 
+### 1.2
+* Consider classifying Properties
+* use Json dumps for analysis
+
 ### 1.1
 * Generate associationrules for qualifier and references
 * Improve ranking to avoid suggestions of human properties

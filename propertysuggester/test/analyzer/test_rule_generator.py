@@ -1,5 +1,4 @@
 import unittest
-import math
 
 from testtools import TestCase
 from testtools.matchers import *
@@ -11,7 +10,8 @@ from propertysuggester.utils.datamodel import Entity, Claim, Snak
 
 test_data1 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
                              Claim(Snak(373, 'string', 'Africa'))]),
-              Entity('Q16', [Claim(Snak(31, 'wikibase-entityid', 'Q384'))])]
+              Entity('Q16', [Claim(Snak(31, 'wikibase-entityid', 'Q5107'))]),
+              Entity('Q17', [Claim(Snak(31, 'wikibase-entityid', 'Q1337'))])]
 
 test_data2 = [Entity('Q15', [Claim(Snak(31, 'wikibase-entityid', 'Q5107')),
                              Claim(Snak(373, 'string', 'Africa')),
@@ -28,13 +28,12 @@ class RuleGeneratorTest(TestCase):
 
     def test_table_generator(self):
         rules = list(RuleGenerator.compute_rules(test_data1))
-        self.assertThat(rules, ContainsAll([Rule(31, None, 373, 1, 0.5*math.log(2), "item"),
-                                            Rule(373, None, 31, 1, 1.0*math.log(2), "item")]))
+        self.assertThat(rules, ContainsAll([Rule(31, 5107, 373, 1, 0.5, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
+
 
     def test_table_with_multiple_occurance(self):
         rules = list(RuleGenerator.compute_rules(test_data2))
-        self.assertThat(rules, ContainsAll([Rule(31, None, 373, 1, 1.0*math.log(2), "item"),
-                                            Rule(373, None, 31, 1, 1.0*math.log(2), "item")]))
+        self.assertThat(rules, ContainsAll([Rule(31, 5107, 373, 1, 1.0, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
 
     def test_table_with_qualifier_and_references(self):
         rules = list(RuleGenerator.compute_rules(test_data3))
