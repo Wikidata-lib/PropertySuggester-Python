@@ -30,7 +30,7 @@ nosetests
 
 ## Release Notes
 
-### 1.2
+### 2.0.0
 * Consider classifying Properties
 * use Json dumps for analysis
 
