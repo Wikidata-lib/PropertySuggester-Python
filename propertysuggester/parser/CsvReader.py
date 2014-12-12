@@ -7,10 +7,10 @@ with open("file.csv", "r") as f:
         do_things()
 
 """
+import logging
 import csv
 
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
-
 
 def read_csv(input_file, delimiter=","):
     """
@@ -25,7 +25,8 @@ def read_csv(input_file, delimiter=","):
 
     for row in csv_reader:
         if len(row) != 5:
-            print "error: {0}".format(row)
+            logging.warning("error: {0}".format(row))
+            continue
         title, typ, property_id, datatype, value = row
         if current_title != title:
             if current_title is not None:
@@ -41,7 +42,7 @@ def read_csv(input_file, delimiter=","):
         elif typ == 'qualifier':
             current_claim.qualifiers.append(snak)
         else:
-            print "unknown type: {0}".format(typ)
+            logging.warning("unknown type: {0}".format(typ))
 
     if not current_title is None:
         yield Entity(current_title, claims)

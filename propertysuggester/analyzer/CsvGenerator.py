@@ -1,6 +1,6 @@
+import logging
 import csv
 from propertysuggester.analyzer.rule import Rule
-
 
 def create_pair_csv(rules, out, delimiter=","):
     """
@@ -16,4 +16,4 @@ def create_pair_csv(rules, out, delimiter=","):
         csv_writer.writerow((rule.pid1, rule.qid1 or '', rule.pid2, rule.count, rule.probability, rule.context))
         rowcount += 1
         if rowcount % 1000 == 0:
-            print "rows {0}".format(rowcount)
+            logging.info("rows {0}".format(rowcount))

@@ -7,6 +7,7 @@ with open("file.csv", "r") as f:
         do_things()
 
 """
+import logging
 import multiprocessing
 import traceback
 import signal
@@ -15,13 +16,13 @@ from propertysuggester.utils.datamodel import Claim, Entity, Snak
 try:
     import ujson as json
 except ImportError:
-    print "ujson not found"
+    logging.info("ujson not found")
     import json as json
 
 try:
     import xml.etree.cElementTree as ElementTree
 except ImportError:
-    print "cElementTree not found"
+    logging.info("cElementTree not found")
     import xml.etree.ElementTree as ElementTree
 
 NS = "http://www.mediawiki.org/xml/export-0.8/"
@@ -49,7 +50,7 @@ def read_xml(input_file, thread_count=1):
             for entity in pool.imap(_process_json, _get_xml(input_file)):
                 yield entity
         except KeyboardInterrupt:
-            print "KeyboardInterrupt"
+            logging.info("KeyboardInterrupt")
             pool.terminate()
         except Exception:
             pool.terminate()
@@ -76,7 +77,7 @@ def _get_xml(input_file):
         elif element.tag == page_tag:
             count += 1
             if count % 3000 == 0:
-                print "processed %.2fMB" % (input_file.tell() / 1024.0 ** 2)
+                logging.info("processed %.2fMB" % (input_file.tell() / 1024.0 ** 2))
             if model == "wikibase-item":
                 yield title, claim_json
         element.clear()
@@ -118,7 +119,7 @@ def _parse_json_snak(claim_json):
             if claim_json[3]["entity-type"] == "item":
                 value = "Q" + str(claim_json[3]["numeric-id"])
             else:
-                print "WARNING unknown entitytype: {0}".format(claim_json[3]["entity-type"])
+                logging.warning("unknown entitytype: {0}".format(claim_json[3]["entity-type"]))
         elif datatype == "time":
             value = claim_json[3]["time"]
         elif datatype == "quantity":
@@ -129,7 +130,7 @@ def _parse_json_snak(claim_json):
             # for example in Q2241
             return None
         else:
-            print "WARNING unknown wikidata datatype: %s" % datatype
+            logging.warning("unknown wikidata datatype: %s" % datatype)
             return None
     else:  # novalue, somevalue, ...
         datatype = "unknown"

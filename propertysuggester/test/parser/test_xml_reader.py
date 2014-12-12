@@ -9,7 +9,6 @@ from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseT
 from propertysuggester.parser import XmlReader
 from propertysuggester.utils.datamodel import Claim, Snak, Entity
 
-
 class XmlReaderTest(AbstractUniverseTest):
     def test_universe(self):
         with gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz"), "r") as f:

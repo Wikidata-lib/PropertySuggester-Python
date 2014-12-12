@@ -1,3 +1,4 @@
+import logging
 from StringIO import StringIO
 
 from testtools import TestCase
@@ -6,7 +7,6 @@ from testtools.matchers import *
 from propertysuggester.parser import CsvReader
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
-
 
 class CsvReaderTest(AbstractUniverseTest):
     def setUp(self):
@@ -40,13 +40,20 @@ class CsvReaderTest(AbstractUniverseTest):
         out = StringIO()
         out.writelines(["Q1,unknown,373,string,Universe\n"])
         out.seek(0)
-        result = list(CsvReader.read_csv(out))
 
-    def test_invalid_row_throws_exception(self):
+        logging.basicConfig(level=40) # Errors up to 30 (WARNING) are expected
+
+        result = list(CsvReader.read_csv(out))
+        self.assertThat(result[0].title, Equals("Q1"))
+
+    def test_invalid_row_is_skipped(self):
         f = StringIO()
         f.writelines(["a,b"])
         f.seek(0)
-        self.assertRaises(ValueError, lambda: list(CsvReader.read_csv(f)))
+
+        logging.basicConfig(level=40) # Errors up to 30 (WARNING) are expected
+
+        self.assertThat(list(CsvReader.read_csv(f)), Equals(list()))
 
     def test_tostring(self):
         e = Entity("Q1", [Claim(Snak(2,"string","a"))])
