@@ -44,6 +44,8 @@ def _process_json(data):
             references = []
             if "references" in statement:
                 for reference in statement["references"]:  # TODO: group reference snaks correctly
+                    if not reference["snaks"]:
+                        continue
                     for ref_id, snaks in reference["snaks"].iteritems():
                         for snak in snaks:
                             ref = _parse_json_snak(snak)
