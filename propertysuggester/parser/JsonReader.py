@@ -7,12 +7,13 @@ with open("file.csv", "r") as f:
         do_things()
 
 """
+import logging
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
 try:
     import ujson as json
 except ImportError:
-    print "ujson not found"
+    logging.info("ujson not found")
     import json as json
 
 
@@ -25,7 +26,7 @@ def read_json(input_file):
     for jsonline in input_file:
         count += 1
         if count % 3000 == 0:
-            print "processed %.2fMB" % (input_file.tell() / 1024.0 ** 2)
+            logging.info("processed %.2fMB" % (input_file.tell() / 1024.0 ** 2))
 
         if jsonline[0] == "{":
             jsonline = jsonline.rstrip(",\r\n")
@@ -75,7 +76,7 @@ def _parse_json_snak(claim_json):
             if datavalue["entity-type"] == "item":
                 value = "Q" + str(datavalue["numeric-id"])
             else:
-                print "WARNING unknown entitytype: {0}".format(datavalue["entity-type"])
+                logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
         elif datatype == "time":
             value = datavalue["time"]
         elif datatype == "quantity":
@@ -88,7 +89,7 @@ def _parse_json_snak(claim_json):
             # for example in Q2241
             return None
         else:
-            print "WARNING unknown wikidata datatype: %s" % datatype
+            logging.warning("unknown wikidata datatype: %s" % datatype)
             return None
     else:  # novalue, somevalue, ...
         datatype = "unknown"
