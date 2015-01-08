@@ -77,6 +77,11 @@ def _parse_json_snak(claim_json):
                 value = "Q" + str(datavalue["numeric-id"])
             else:
                 logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
+        elif datatype == "wikibase-property":
+            if datavalue["entity-type"] == "property":
+                value = "P" + str(datavalue["numeric-id"])
+            else:
+                logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
         elif datatype == "time":
             value = datavalue["time"]
         elif datatype == "quantity":
