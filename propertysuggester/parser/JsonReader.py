@@ -68,6 +68,9 @@ def _process_json(data):
 
 def _parse_json_snak(claim_json):
     if claim_json["snaktype"] == "value":
+        if not 'datatype' in claim_json:
+            logging.warning("encountered snak without datatype: " + str( claim_json ) )
+            return None
         datatype = claim_json["datatype"]
         datavalue = claim_json["datavalue"]["value"]
         if datatype in ("string", "commonsMedia", "url"):
