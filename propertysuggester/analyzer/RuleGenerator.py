@@ -23,7 +23,7 @@ def compute_rules(entities, min_probability=0.01):
 
     for i, entity in enumerate(entities):
         if i % 100000 == 0 and i > 0:
-            logging.info("entities {0}".format(i))
+            logging.info("processed {0} entities".format(i))
         for analyzer in analyzers:
             analyzer.process(entity)
 
