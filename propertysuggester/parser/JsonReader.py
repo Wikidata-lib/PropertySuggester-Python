@@ -73,31 +73,39 @@ def _parse_json_snak(claim_json):
             return None
         datatype = claim_json["datatype"]
         datavalue = claim_json["datavalue"]["value"]
-        if datatype in ("string", "commonsMedia", "url"):
-            value = datavalue
-        elif datatype == "wikibase-item":
-            if datavalue["entity-type"] == "item":
-                value = "Q" + str(datavalue["numeric-id"])
+
+        try:
+            if datatype in ("string", "commonsMedia", "url"):
+                value = datavalue
+            elif datatype == "wikibase-item":
+                if datavalue["entity-type"] == "item":
+                    value = "Q" + str(datavalue["numeric-id"])
+                else:
+                    logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
+            elif datatype == "wikibase-property":
+                if datavalue["entity-type"] == "property":
+                    value = "P" + str(datavalue["numeric-id"])
+                else:
+                    logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
+            elif datatype == "time":
+                value = datavalue["time"]
+            elif datatype == "quantity":
+                value = datavalue["amount"]
+            elif datatype == "globe-coordinate":
+                value = "N{0[latitude]}, E{0[longitude]}".format(datavalue)
+            elif datatype == "monolingualtext":
+                value = u"{0[text]} ({0[language]})".format(datavalue)
+            elif datatype == "bad":
+                # for example in Q2241
+                return None
             else:
-                logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
-        elif datatype == "wikibase-property":
-            if datavalue["entity-type"] == "property":
-                value = "P" + str(datavalue["numeric-id"])
-            else:
-                logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
-        elif datatype == "time":
-            value = datavalue["time"]
-        elif datatype == "quantity":
-            value = datavalue["amount"]
-        elif datatype == "globe-coordinate":
-            value = "N{0[latitude]}, E{0[longitude]}".format(datavalue)
-        elif datatype == "monolingualtext":
-            value = u"{0[text]} ({0[language]})".format(datavalue)
-        elif datatype == "bad":
-            # for example in Q2241
+                logging.warning("unknown wikidata datatype: %s" % datatype)
+                return None
+        except KeyError, e:
+            logging.warning("unrecognized or mismatching datavalue for datatype: %s" % e)
             return None
-        else:
-            logging.warning("unknown wikidata datatype: %s" % datatype)
+        except TypeError, e:
+            logging.warning("type error: %s" % e)
             return None
     else:  # novalue, somevalue, ...
         datatype = "unknown"

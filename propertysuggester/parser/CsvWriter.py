@@ -1,4 +1,5 @@
 import csv
+import logging
 
 from propertysuggester.utils.datamodel import Entity
 
@@ -26,6 +27,12 @@ def write_row(csv_writer, title, typ, snak):
     @param snak: Snak
     @return:
     """
-    row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"), snak.value.encode("utf-8"))
-    csv_writer.writerow(row)
+    try:
+        row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"), snak.value.encode("utf-8"))
+    except AttributeError, e:
+        logging.warning("attribute error, skip writing %s" % title)
+        row = None
+
+    if row is not None:
+        csv_writer.writerow(row)
 
