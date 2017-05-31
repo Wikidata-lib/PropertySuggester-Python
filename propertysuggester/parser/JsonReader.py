@@ -75,7 +75,7 @@ def _parse_json_snak(claim_json):
         datavalue = claim_json["datavalue"]["value"]
 
         try:
-            if datatype in ("string", "commonsMedia", "url", "external-id", "math"):
+            if datatype in ("string", "commonsMedia", "geo-shape", "url", "external-id", "math"):
                 value = datavalue
             elif datatype == "wikibase-item":
                 if datavalue["entity-type"] == "item":
