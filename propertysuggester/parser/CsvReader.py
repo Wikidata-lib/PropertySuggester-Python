@@ -12,6 +12,7 @@ import csv
 
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
+
 def read_csv(input_file, delimiter=","):
     """
     @rtype : collections.Iterable[Entity]
@@ -44,6 +45,5 @@ def read_csv(input_file, delimiter=","):
         else:
             logging.warning("unknown type: {0}".format(typ))
 
-    if not current_title is None:
+    if current_title is not None:
         yield Entity(current_title, claims)
-

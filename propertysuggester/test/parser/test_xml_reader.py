@@ -3,11 +3,12 @@ import gzip
 
 from pkg_resources import resource_filename
 from testtools import TestCase
-from testtools.matchers import *
+from testtools.matchers import Contains, Equals, HasLength
 
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import XmlReader
 from propertysuggester.utils.datamodel import Claim, Snak, Entity
+
 
 class XmlReaderTest(AbstractUniverseTest):
     def test_universe(self):
@@ -32,6 +33,7 @@ class XmlReaderTest(AbstractUniverseTest):
         self.assertThat(XmlReader._process_json(("Q1", '{"claims":[{"m":["value","","unknown"], "refs":[],"q":[]}]}')),
                         Equals(Entity("Q1", [])))
 
+
 class MultiprocessingBigTest(TestCase):
     def test_simple_multiprocessing(self):
         r1 = list(XmlReader.read_xml(gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz")), 1))
@@ -47,6 +49,6 @@ class MultiprocessingBigTest(TestCase):
         self.assertThat(r1, HasLength(87))
         self.assertThat(r4, Equals(r1))
 
+
 if __name__ == '__main__':
     unittest.main()
-

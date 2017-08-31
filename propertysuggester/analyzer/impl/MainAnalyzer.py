@@ -2,13 +2,14 @@ from collections import defaultdict
 from propertysuggester.analyzer.impl.Analyzer import Analyzer
 from propertysuggester.analyzer.rule import Rule
 
+
 class ItemAnalyzer(Analyzer):
-    def __init__(self, classiying_property_ids = [31,279]):
+    def __init__(self, classiying_property_ids=[31, 279]):
         Analyzer.__init__(self)
         self.classiying_pids = classiying_property_ids
         self.tuple_occurrences = defaultdict(int)
         self.pair_occurrences = defaultdict(lambda: defaultdict(int))
-    
+
     def process(self, item):
         distinct_ids = set(claim.mainsnak.property_id for claim in item.claims)
         property_value_pairs = [(claim.mainsnak.property_id, claim.mainsnak.value) for claim in item.claims]

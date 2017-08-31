@@ -1,4 +1,3 @@
-
 import argparse
 import gzip
 import bz2
@@ -6,7 +5,10 @@ import bz2
 
 class CompressedFileType(argparse.FileType):
     """
-    Helper class for argparse. Automatically creates gzip or bz2 reader/writer if a file ends with .gz or .bz2
+    Helper class for argparse.
+
+    Automatically creates gzip or bz2 reader/writer if a file ends
+    with .gz or .bz2
     """
     def __call__(self, string):
         try:

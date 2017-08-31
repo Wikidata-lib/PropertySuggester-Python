@@ -1,8 +1,6 @@
 import csv
 import logging
 
-from propertysuggester.utils.datamodel import Entity
-
 
 def write_csv(entities, output_file, delimiter=","):
     """
@@ -21,6 +19,7 @@ def write_csv(entities, output_file, delimiter=","):
             for ref in claim.references:
                 write_row(csv_writer, title, "reference", ref)
 
+
 def write_row(csv_writer, title, typ, snak):
     """
     @param csv_writer:
@@ -29,10 +28,9 @@ def write_row(csv_writer, title, typ, snak):
     """
     try:
         row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"), snak.value.encode("utf-8"))
-    except AttributeError, e:
+    except AttributeError:
         logging.warning("attribute error, skip writing %s" % title)
         row = None
 
     if row is not None:
         csv_writer.writerow(row)
-

@@ -85,7 +85,7 @@ def _get_xml(input_file):
 
 def _process_json((title, json_string)):
     data = json.loads(json_string)
-    if not "claims" in data:
+    if "claims" not in data:
         return Entity(title, [])
 
     claims = []

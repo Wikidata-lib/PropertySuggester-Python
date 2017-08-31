@@ -1,17 +1,16 @@
 import logging
 from StringIO import StringIO
 
-from testtools import TestCase
-from testtools.matchers import *
+from testtools.matchers import Equals, HasLength
 
 from propertysuggester.parser import CsvReader
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
+
 class CsvReaderTest(AbstractUniverseTest):
     def setUp(self):
         AbstractUniverseTest.setUp(self)
-
 
     def test_universe(self):
         out = StringIO()
@@ -41,7 +40,7 @@ class CsvReaderTest(AbstractUniverseTest):
         out.writelines(["Q1,unknown,373,string,Universe\n"])
         out.seek(0)
 
-        logging.basicConfig(level=40) # Errors up to 30 (WARNING) are expected
+        logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
         result = list(CsvReader.read_csv(out))
         self.assertThat(result[0].title, Equals("Q1"))
@@ -51,10 +50,10 @@ class CsvReaderTest(AbstractUniverseTest):
         f.writelines(["a,b"])
         f.seek(0)
 
-        logging.basicConfig(level=40) # Errors up to 30 (WARNING) are expected
+        logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
         self.assertThat(list(CsvReader.read_csv(f)), Equals(list()))
 
     def test_tostring(self):
-        e = Entity("Q1", [Claim(Snak(2,"string","a"))])
+        e = Entity("Q1", [Claim(Snak(2, "string", "a"))])
         str(e)

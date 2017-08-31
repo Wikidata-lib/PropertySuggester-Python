@@ -1,7 +1,7 @@
 import unittest
 
 from testtools import TestCase
-from testtools.matchers import *
+from testtools.matchers import ContainsAll
 
 from propertysuggester.analyzer import RuleGenerator
 from propertysuggester.analyzer.rule import Rule
@@ -29,7 +29,6 @@ class RuleGeneratorTest(TestCase):
     def test_table_generator(self):
         rules = list(RuleGenerator.compute_rules(test_data1))
         self.assertThat(rules, ContainsAll([Rule(31, 5107, 373, 1, 0.5, "item"), Rule(373, None, 31, 1, 1.0, "item")]))
-
 
     def test_table_with_multiple_occurance(self):
         rules = list(RuleGenerator.compute_rules(test_data2))

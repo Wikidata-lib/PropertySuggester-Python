@@ -3,7 +3,7 @@ import gzip
 from pkg_resources import resource_filename
 
 from testtools import TestCase
-from testtools.matchers import *
+from testtools.matchers import Equals
 
 from propertysuggester.parser import XmlReader
 from propertysuggester.parser import CsvWriter
@@ -46,4 +46,3 @@ class CsvWriterTest(TestCase):
 
         out.seek(0)
         self.assertThat(len(out.readlines()), Equals(5627))
-

@@ -1,7 +1,7 @@
 from testtools import TestCase
-from testtools.matchers import *
+from testtools.matchers import Contains, Equals, HasLength
 
-from propertysuggester.utils.datamodel import Claim, Entity, Snak
+from propertysuggester.utils.datamodel import Claim, Snak
 
 
 class AbstractUniverseTest(TestCase):

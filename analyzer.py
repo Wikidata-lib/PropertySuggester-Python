@@ -8,11 +8,15 @@ from propertysuggester.parser import CsvReader
 from propertysuggester.utils.CompressedFileType import CompressedFileType
 
 if __name__ == "__main__":
-    logging.basicConfig(level=20) # Print logging.info
+    logging.basicConfig(level=20)  # Print logging.info
 
-    parser = argparse.ArgumentParser(description="this program generates a correlation-table from the csv-dump")
-    parser.add_argument("input", help="The CSV input file (wikidata triple)", type=CompressedFileType('rb'))
-    parser.add_argument("output", help="The CSV output file (default=sys.stdout)", default=sys.stdout, nargs='?',
+    parser = argparse.ArgumentParser(
+        description="this program generates a correlation-table from the csv-dump")
+    parser.add_argument("input", help="The CSV input file (wikidata triple)",
+                        type=CompressedFileType('rb'))
+    parser.add_argument("output",
+                        help="The CSV output file (default=sys.stdout)",
+                        default=sys.stdout, nargs='?',
                         type=CompressedFileType('wb'))
     args = parser.parse_args()
 

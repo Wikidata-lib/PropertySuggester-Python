@@ -1,6 +1,4 @@
-from collections import defaultdict
-from propertysuggester.analyzer.rule import Rule
-from propertysuggester.utils.datamodel import Entity
+
 
 class Analyzer:
     def __init__(self):

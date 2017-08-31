@@ -1,6 +1,6 @@
 import logging
 import csv
-from propertysuggester.analyzer.rule import Rule
+
 
 def create_pair_csv(rules, out, delimiter=","):
     """

@@ -37,7 +37,7 @@ def read_json(input_file):
 
 def _process_json(data):
     title = data["id"]
-    if not "claims" in data:
+    if "claims" not in data:
         return Entity(title, [])
     claims = []
     for property_id, statements in data["claims"].iteritems():
@@ -68,8 +68,9 @@ def _process_json(data):
 
 def _parse_json_snak(claim_json):
     if claim_json["snaktype"] == "value":
-        if not 'datatype' in claim_json:
-            logging.warning("encountered snak without datatype: " + str( claim_json ) )
+        if 'datatype' not in claim_json:
+            logging.warning(
+                "encountered snak without datatype: " + str(claim_json))
             return None
         datatype = claim_json["datatype"]
         datavalue = claim_json["datavalue"]["value"]
