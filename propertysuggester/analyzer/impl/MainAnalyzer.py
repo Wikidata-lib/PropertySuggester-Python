@@ -12,7 +12,10 @@ class ItemAnalyzer(Analyzer):
 
     def process(self, item):
         distinct_ids = set(claim.mainsnak.property_id for claim in item.claims)
-        property_value_pairs = [(claim.mainsnak.property_id, claim.mainsnak.value) for claim in item.claims]
+        property_value_pairs = [
+            (claim.mainsnak.property_id, claim.mainsnak.value)
+            for claim in item.claims
+        ]
         self._count_occurrences(distinct_ids, property_value_pairs)
 
     def _count_occurrences(self, distinct_ids, property_value_pairs):

@@ -32,7 +32,8 @@ class QualifierAnalyzer(Analyzer):
             for qualifier_pid, paircount in row.iteritems():
                 if paircount > 0:
                     probability = paircount/float(maincount)
-                    rules.append(Rule(main_pid, None, qualifier_pid, paircount, probability, self.context))
+                    rules.append(Rule(main_pid, None, qualifier_pid, paircount,
+                                      probability, self.context))
         return rules
 
 

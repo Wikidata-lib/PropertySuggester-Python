@@ -16,6 +16,16 @@ except ImportError:
     logging.info("ujson not found")
     import json as json
 
+data_types = [
+    "string",
+    "commonsMedia",
+    "geo-shape",
+    "url",
+    "external-id",
+    "math",
+    "tabular-data"
+]
+
 
 def read_json(input_file):
     """
@@ -76,7 +86,7 @@ def _parse_json_snak(claim_json):
         datavalue = claim_json["datavalue"]["value"]
 
         try:
-            if datatype in ("string", "commonsMedia", "geo-shape", "url", "external-id", "math", "tabular-data"):
+            if datatype in data_types:
                 value = datavalue
             elif datatype == "wikibase-item":
                 if datavalue["entity-type"] == "item":

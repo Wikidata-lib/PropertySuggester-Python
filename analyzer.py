@@ -11,7 +11,8 @@ if __name__ == "__main__":
     logging.basicConfig(level=20)  # Print logging.info
 
     parser = argparse.ArgumentParser(
-        description="this program generates a correlation-table from the csv-dump")
+        description="this program generates a correlation-table from "
+                    "the csv-dump")
     parser.add_argument("input", help="The CSV input file (wikidata triple)",
                         type=CompressedFileType('rb'))
     parser.add_argument("output",
@@ -26,4 +27,5 @@ if __name__ == "__main__":
     logging.info("writing csv")
     CsvGenerator.create_pair_csv(rules, args.output)
     logging.info("done - {0:.2f}s".format(time.time()-start))
-    logging.info("now import this csv file with PropertySuggester/maintenance/UpdateTable.php")
+    logging.info("now import this csv file with "
+                 "PropertySuggester/maintenance/UpdateTable.php")

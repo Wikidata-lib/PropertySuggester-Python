@@ -27,7 +27,8 @@ def write_row(csv_writer, title, typ, snak):
     @return:
     """
     try:
-        row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"), snak.value.encode("utf-8"))
+        row = (title, typ, snak.property_id, snak.datatype.encode("utf-8"),
+               snak.value.encode("utf-8"))
     except AttributeError:
         logging.warning("attribute error, skip writing %s" % title)
         row = None

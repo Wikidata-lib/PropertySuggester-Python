@@ -18,7 +18,8 @@ class CsvGeneratorTest(TestCase):
         CsvGenerator.create_pair_csv([rule], self.file)
 
         self.file.seek(0)
-        self.assertThat(self.file.readline().strip(), Equals("pid1,qid1,pid2,count,probability,context"))
+        self.assertThat(self.file.readline().strip(),
+                        Equals("pid1,qid1,pid2,count,probability,context"))
         self.assertThat(self.file.readline().strip(), Equals("1,,2,5,0.3,item"))
 
 

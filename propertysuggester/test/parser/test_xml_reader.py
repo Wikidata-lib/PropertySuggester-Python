@@ -27,24 +27,32 @@ class XmlReaderTest(AbstractUniverseTest):
         self.assertThat(q9351.claims, Contains(Claim(Snak(1112, "quantity", "+25"))))
 
     def test_special_cases(self):
-        self.assertThat(XmlReader._process_json(("Q1", "{}")), Equals(Entity("Q1", [])))
-        self.assertThat(XmlReader._process_json(("Q1", '{"claims":[{"m":["value","","bad"], "refs":[],"q":[]}]}')),
+        self.assertThat(XmlReader._process_json(("Q1", "{}")),
                         Equals(Entity("Q1", [])))
-        self.assertThat(XmlReader._process_json(("Q1", '{"claims":[{"m":["value","","unknown"], "refs":[],"q":[]}]}')),
+        data = '{"claims":[{"m":["value","","bad"], "refs":[],"q":[]}]}'
+        self.assertThat(XmlReader._process_json(("Q1", data)),
+                        Equals(Entity("Q1", [])))
+        data = '{"claims":[{"m":["value","","unknown"], "refs":[],"q":[]}]}'
+        self.assertThat(XmlReader._process_json(("Q1", data)),
                         Equals(Entity("Q1", [])))
 
 
 class MultiprocessingBigTest(TestCase):
     def test_simple_multiprocessing(self):
-        r1 = list(XmlReader.read_xml(gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz")), 1))
-        r4 = list(XmlReader.read_xml(gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz")), 4))
+        r1 = list(XmlReader.read_xml(gzip.open(
+            resource_filename(__name__, "Wikidata-Q1.xml.gz")), 1))
+        r4 = list(XmlReader.read_xml(gzip.open(
+            resource_filename(__name__, "Wikidata-Q1.xml.gz")), 4))
 
         self.assertThat(r1, HasLength(1))
         self.assertThat(r4, Equals(r1))
 
     def test_multiprocessing(self):
-        r1 = list(XmlReader.read_xml(gzip.open(resource_filename(__name__, "Wikidata-20131129161111.xml.gz")), 1))
-        r4 = list(XmlReader.read_xml(gzip.open(resource_filename(__name__, "Wikidata-20131129161111.xml.gz")), 4))
+        file_name = "Wikidata-20131129161111.xml.gz"
+        r1 = list(XmlReader.read_xml(gzip.open(
+            resource_filename(__name__, file_name)), 1))
+        r4 = list(XmlReader.read_xml(gzip.open(
+            resource_filename(__name__, file_name)), 4))
 
         self.assertThat(r1, HasLength(87))
         self.assertThat(r4, Equals(r1))

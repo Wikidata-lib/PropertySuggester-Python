@@ -8,7 +8,7 @@ install:
 
 script: 
     - nosetests --verbose --with-coverage --cover-package=propertysuggester --cover-min-percentage=80
-    - flake8 . --max-line-length=120
+    - flake8 . --max-line-length=100
 
 after_success:
     - coveralls debug

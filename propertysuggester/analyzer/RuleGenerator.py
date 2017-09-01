@@ -3,7 +3,8 @@ import os
 import logging
 import itertools
 from propertysuggester.analyzer.impl.MainAnalyzer import ItemAnalyzer
-from propertysuggester.analyzer.impl.QualifierReferenceAnalyzer import QualifierAnalyzer, ReferenceAnalyzer
+from propertysuggester.analyzer.impl.QualifierReferenceAnalyzer import (
+    QualifierAnalyzer, ReferenceAnalyzer)
 
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'analyzer.ini'))

@@ -13,10 +13,10 @@ if __name__ == "__main__":
         description="this program converts wikidata JSON dumps to CSV data.")
     parser.add_argument("input", help="The JSON input file (a wikidata dump)",
                         type=CompressedFileType('r'))
-    parser.add_argument("output", help="The CSV output file (default=sys.stdout)",
+    parser.add_argument("output",
+                        help="The CSV output file (default=sys.stdout)",
                         default=sys.stdout, nargs='?',
                         type=CompressedFileType('wb'))
-    # parser.add_argument("-p", "--processes", help="Number of processors to use (default 4)", type=int, default=4)
     args = parser.parse_args()
     start = time.time()
     CsvWriter.write_csv(JsonReader.read_json(args.input), args.output)
