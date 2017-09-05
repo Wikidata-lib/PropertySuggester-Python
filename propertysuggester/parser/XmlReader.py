@@ -83,7 +83,8 @@ def _get_xml(input_file):
         element.clear()
 
 
-def _process_json((title, json_string)):
+def _process_json(arguments):
+    (title, json_string) = arguments
     data = json.loads(json_string)
     if "claims" not in data:
         return Entity(title, [])

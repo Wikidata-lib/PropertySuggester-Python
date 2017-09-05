@@ -2,7 +2,7 @@ import unittest
 import gzip
 
 from pkg_resources import resource_filename
-from testtools.matchers import Contains, Equals, HasLength
+from nose.tools import eq_
 
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import JsonReader
@@ -24,14 +24,14 @@ class JsonReaderTest(AbstractUniverseTest):
             ],
             [Snak(248, "wikibase-item", "Q17597573")]
         )
-        self.assertThat(result, HasLength(1))
+        eq_(1, len(result))
         q15511 = result[0]
-        self.assertThat(q15511.title, Equals("Q15511"))
-        self.assertThat(q15511.claims, Contains(claim))
+        eq_('Q15511', q15511.title)
+        self.assertIn(claim, q15511.claims)
 
     def test_special_cases(self):
         data = dict([("id", "Q1"), ("type", "item")])
-        self.assertThat(JsonReader._process_json(data), Equals(Entity("Q1", [])))
+        eq_(Entity("Q1", []), JsonReader._process_json(data))
 
 
 if __name__ == '__main__':

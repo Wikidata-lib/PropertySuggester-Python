@@ -1,7 +1,11 @@
 import logging
-from StringIO import StringIO
 
-from testtools.matchers import Equals, HasLength
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
+from nose.tools import eq_
 
 from propertysuggester.parser import CsvReader
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
@@ -31,9 +35,9 @@ class CsvReaderTest(AbstractUniverseTest):
         out.seek(0)
         result = list(CsvReader.read_csv(out))
 
-        self.assertThat(result, HasLength(2))
-        self.assertThat(result[0].title, Equals("Q1"))
-        self.assertThat(result[1].title, Equals("Q2"))
+        eq_(2, len(result))
+        eq_('Q1', result[0].title)
+        eq_('Q2', result[1].title)
 
     def test_unknown_type(self):
         out = StringIO()
@@ -43,7 +47,7 @@ class CsvReaderTest(AbstractUniverseTest):
         logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
         result = list(CsvReader.read_csv(out))
-        self.assertThat(result[0].title, Equals("Q1"))
+        eq_('Q1', result[0].title)
 
     def test_invalid_row_is_skipped(self):
         f = StringIO()
@@ -52,7 +56,7 @@ class CsvReaderTest(AbstractUniverseTest):
 
         logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
-        self.assertThat(list(CsvReader.read_csv(f)), Equals(list()))
+        eq_([], list(CsvReader.read_csv(f)))
 
     def test_tostring(self):
         e = Entity("Q1", [Claim(Snak(2, "string", "a"))])

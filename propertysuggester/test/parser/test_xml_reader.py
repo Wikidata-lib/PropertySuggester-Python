@@ -2,8 +2,8 @@ import unittest
 import gzip
 
 from pkg_resources import resource_filename
-from testtools import TestCase
-from testtools.matchers import Contains, Equals, HasLength
+from unittest import TestCase
+from nose.tools import eq_
 
 from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import XmlReader
@@ -20,21 +20,19 @@ class XmlReaderTest(AbstractUniverseTest):
         with gzip.open(resource_filename(__name__, "Wikidata-Q9351.xml.gz"), "r") as f:
             result = list(XmlReader.read_xml(f))
 
-        self.assertThat(len(result), Equals(1))
+        eq_(1, len(result))
         q9351 = result[0]
-        self.assertThat(q9351.title, Equals("Q9351"))
-        self.assertThat(q9351.claims, Contains(Claim(Snak(156, "wikibase-item", "Q1647331"))))
-        self.assertThat(q9351.claims, Contains(Claim(Snak(1112, "quantity", "+25"))))
+        eq_('Q9351', q9351.title)
+        self.assertIn(Claim(Snak(156, "wikibase-item", "Q1647331")),
+                      q9351.claims)
+        self.assertIn(Claim(Snak(1112, "quantity", "+25")), q9351.claims)
 
     def test_special_cases(self):
-        self.assertThat(XmlReader._process_json(("Q1", "{}")),
-                        Equals(Entity("Q1", [])))
+        eq_(Entity("Q1", []), XmlReader._process_json(("Q1", "{}")))
         data = '{"claims":[{"m":["value","","bad"], "refs":[],"q":[]}]}'
-        self.assertThat(XmlReader._process_json(("Q1", data)),
-                        Equals(Entity("Q1", [])))
+        eq_(Entity("Q1", []), XmlReader._process_json(("Q1", data)))
         data = '{"claims":[{"m":["value","","unknown"], "refs":[],"q":[]}]}'
-        self.assertThat(XmlReader._process_json(("Q1", data)),
-                        Equals(Entity("Q1", [])))
+        eq_(Entity("Q1", []), XmlReader._process_json(("Q1", data)))
 
 
 class MultiprocessingBigTest(TestCase):
@@ -44,8 +42,8 @@ class MultiprocessingBigTest(TestCase):
         r4 = list(XmlReader.read_xml(gzip.open(
             resource_filename(__name__, "Wikidata-Q1.xml.gz")), 4))
 
-        self.assertThat(r1, HasLength(1))
-        self.assertThat(r4, Equals(r1))
+        eq_(1, len(r1))
+        eq_(r1, r4)
 
     def test_multiprocessing(self):
         file_name = "Wikidata-20131129161111.xml.gz"
@@ -54,8 +52,8 @@ class MultiprocessingBigTest(TestCase):
         r4 = list(XmlReader.read_xml(gzip.open(
             resource_filename(__name__, file_name)), 4))
 
-        self.assertThat(r1, HasLength(87))
-        self.assertThat(r4, Equals(r1))
+        eq_(87, len(r1))
+        eq_(r1, r4)
 
 
 if __name__ == '__main__':

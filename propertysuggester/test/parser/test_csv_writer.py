@@ -1,9 +1,13 @@
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import gzip
 from pkg_resources import resource_filename
 
-from testtools import TestCase
-from testtools.matchers import Equals
+from unittest import TestCase
+from nose.tools import eq_
 
 from propertysuggester.parser import XmlReader
 from propertysuggester.parser import CsvWriter
@@ -25,18 +29,18 @@ class CsvWriterTest(TestCase):
         out.seek(0)
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,claim,31,wikibase-entityid,Q5107"))
+        eq_('Q51,claim,31,wikibase-entityid,Q5107', line.strip())
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,claim,373,string,Europe"))
+        eq_('Q51,claim,373,string,Europe', line.strip())
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,qualifier,1,string,qual"))
+        eq_('Q51,qualifier,1,string,qual', line.strip())
 
         line = out.readline()
-        self.assertThat(line.strip(), Equals("Q51,reference,2,string,ref"))
+        eq_('Q51,reference,2,string,ref', line.strip())
 
-        self.assertThat(out.read(), Equals(""))
+        eq_('', out.read())
 
     def test_write_big_csv(self):
         out = StringIO()
@@ -45,4 +49,4 @@ class CsvWriterTest(TestCase):
         CsvWriter.write_csv(xml, out)
 
         out.seek(0)
-        self.assertThat(len(out.readlines()), Equals(5627))
+        eq_(5627, len(out.readlines()))

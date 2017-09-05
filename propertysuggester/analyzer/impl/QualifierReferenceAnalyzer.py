@@ -27,9 +27,9 @@ class QualifierAnalyzer(Analyzer):
 
     def get_rules(self):
         rules = []
-        for main_pid, row in self.qualifier_occurances.iteritems():
+        for main_pid, row in self.qualifier_occurances.items():
             maincount = self.main_occurances[main_pid]
-            for qualifier_pid, paircount in row.iteritems():
+            for qualifier_pid, paircount in row.items():
                 if paircount > 0:
                     probability = paircount/float(maincount)
                     rules.append(Rule(main_pid, None, qualifier_pid, paircount,

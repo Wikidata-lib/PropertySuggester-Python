@@ -37,9 +37,9 @@ class ItemAnalyzer(Analyzer):
 
     def get_rules(self):
         rules = []
-        for (pid1, value), row in self.pair_occurrences.iteritems():
+        for (pid1, value), row in self.pair_occurrences.items():
             pid1count = self.tuple_occurrences[pid1, value]
-            for pid2, paircount in row.iteritems():
+            for pid2, paircount in row.items():
                 if paircount > 0:
                     probability = (paircount/float(pid1count))
                     rules.append(Rule(pid1, value, pid2, paircount, probability, "item"))

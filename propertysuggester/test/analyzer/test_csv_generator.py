@@ -1,8 +1,12 @@
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import unittest
 
-from testtools import TestCase
-from testtools.matchers import Equals
+from unittest import TestCase
+from nose.tools import eq_
 
 from propertysuggester.analyzer import CsvGenerator
 from propertysuggester.analyzer.rule import Rule
@@ -18,9 +22,9 @@ class CsvGeneratorTest(TestCase):
         CsvGenerator.create_pair_csv([rule], self.file)
 
         self.file.seek(0)
-        self.assertThat(self.file.readline().strip(),
-                        Equals("pid1,qid1,pid2,count,probability,context"))
-        self.assertThat(self.file.readline().strip(), Equals("1,,2,5,0.3,item"))
+        eq_('pid1,qid1,pid2,count,probability,context',
+            self.file.readline().strip())
+        eq_('1,,2,5,0.3,item', self.file.readline().strip())
 
 
 if __name__ == '__main__':

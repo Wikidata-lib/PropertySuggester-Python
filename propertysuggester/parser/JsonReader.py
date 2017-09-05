@@ -112,10 +112,10 @@ def _parse_json_snak(claim_json):
             else:
                 logging.warning("unknown wikidata datatype: %s" % datatype)
                 return None
-        except KeyError, e:
+        except KeyError as e:
             logging.warning("unrecognized or mismatching datavalue for datatype: %s" % e)
             return None
-        except TypeError, e:
+        except TypeError as e:
             logging.warning("type error: %s" % e)
             return None
     else:  # novalue, somevalue, ...
