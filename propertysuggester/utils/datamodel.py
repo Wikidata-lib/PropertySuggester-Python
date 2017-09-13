@@ -10,7 +10,7 @@ class Entity:
     def __eq__(self, other):
         return isinstance(other, Entity) and self.__dict__ == other.__dict__
 
-    def __str__(self):
+    def __repr__(self):
         return "title: {0} claims: {1}".format(self.title, map(str, self.claims))
 
 
@@ -28,7 +28,7 @@ class Claim:
     def __eq__(self, other):
         return isinstance(other, Claim) and self.__dict__ == other.__dict__
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.__dict__)
 
 
@@ -46,5 +46,5 @@ class Snak:
     def __eq__(self, other):
         return isinstance(other, Snak) and self.__dict__ == other.__dict__
 
-    def __str__(self):
+    def __repr__(self):
         return str(self.__dict__)

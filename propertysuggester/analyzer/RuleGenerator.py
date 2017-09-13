@@ -13,7 +13,7 @@ from propertysuggester.analyzer.impl.QualifierReferenceAnalyzer import (
 config = ConfigParser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'analyzer.ini'))
 classifying_pids = config.get("mainAnalyzer", "classifying_properties").split(",")
-classifying_pids = map(int, classifying_pids)
+classifying_pids = [int(i) for i in classifying_pids]
 
 
 def compute_rules(entities, min_probability=0.01):

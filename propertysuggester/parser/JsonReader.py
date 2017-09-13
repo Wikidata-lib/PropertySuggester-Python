@@ -9,6 +9,7 @@ with open("file.csv", "r") as f:
 """
 import logging
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
+import sys
 
 try:
     import ujson as json
@@ -27,6 +28,16 @@ data_types = [
 ]
 
 
+def compatible_str(term):
+    # TODO: Remove this when migrated to python3
+    if isinstance(term, str):
+        return term
+    if sys.version_info < (3,):
+        return str(term.encode('utf-8'))
+    else:
+        return str(term, 'utf-8')
+
+
 def read_json(input_file):
     """
     @rtype : collections.Iterable[Entity]
@@ -35,9 +46,9 @@ def read_json(input_file):
     count = 0
     for jsonline in input_file:
         count += 1
+        jsonline = compatible_str(jsonline)
         if count % 3000 == 0:
             logging.info("processed %.2fMB" % (input_file.tell() / 1024.0 ** 2))
-
         if jsonline[0] == "{":
             jsonline = jsonline.rstrip(",\r\n")
             data = json.loads(jsonline)
@@ -50,21 +61,21 @@ def _process_json(data):
     if "claims" not in data:
         return Entity(title, [])
     claims = []
-    for property_id, statements in data["claims"].iteritems():
+    for property_id, statements in sorted(list(data["claims"].items())):
         for statement in statements:
             references = []
             if "references" in statement:
                 for reference in statement["references"]:  # TODO: group reference snaks correctly
                     if not reference["snaks"]:
                         continue
-                    for ref_id, snaks in reference["snaks"].iteritems():
+                    for ref_id, snaks in sorted(list(reference["snaks"].items())):
                         for snak in snaks:
                             ref = _parse_json_snak(snak)
                             if ref:
                                 references.append(ref)
             qualifiers = []
             if "qualifiers" in statement:
-                for qual_id, snaks in statement["qualifiers"].iteritems():
+                for qual_id, snaks in sorted(list(statement["qualifiers"].items())):
                     for snak in snaks:
                         qualifier = _parse_json_snak(snak)
                         if qualifier:
