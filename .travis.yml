@@ -7,10 +7,11 @@ install:
     - sudo apt-get install libmysqlclient-dev
     - pip install -r requirements.txt
 
-script: 
-    - nosetests --verbose --with-coverage --cover-package=propertysuggester --cover-min-percentage=80
+script:
+    - coverage run --source propertysuggester -m pytest -v
     - flake8 . --max-line-length=100
 
 after_success:
+    - coverage report
     - coveralls debug
     - coveralls

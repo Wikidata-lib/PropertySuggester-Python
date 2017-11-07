@@ -5,17 +5,11 @@ try:
 except ImportError:
     from io import StringIO
 
-from nose.tools import eq_
-
 from propertysuggester.parser import CsvReader
-from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.utils.datamodel import Claim, Entity, Snak
 
 
-class CsvReaderTest(AbstractUniverseTest):
-    def setUp(self):
-        AbstractUniverseTest.setUp(self)
-
+class TestCsvReader():
     def test_universe(self):
         out = StringIO()
         out.writelines(["Q1,claim,373,string,Universe\n",
@@ -26,7 +20,18 @@ class CsvReaderTest(AbstractUniverseTest):
                         "Q1,qualifier,31,wikibase-item,Q41719\n"])
         out.seek(0)
         result = list(CsvReader.read_csv(out))
-        self.assert_universe(result)
+        assert 1 == len(result)
+        q1 = result[0]
+
+        assert "Q1" == q1.title
+        assert (Claim(Snak(373, "string", "Universe"), [],
+                [Snak(143, "wikibase-item", "Q328")]) in
+                q1.claims)
+        assert Claim(Snak(31, "wikibase-item", "Q223557")) in q1.claims
+        assert Claim(Snak(31, "wikibase-item", "Q1088088")) in q1.claims
+        assert (Claim(Snak(361, "wikibase-item", "Q3327819"),
+                [Snak(31, "wikibase-item", "Q41719")], []) in
+                q1.claims)
 
     def test_multiple_entities(self):
         out = StringIO()
@@ -35,9 +40,9 @@ class CsvReaderTest(AbstractUniverseTest):
         out.seek(0)
         result = list(CsvReader.read_csv(out))
 
-        eq_(2, len(result))
-        eq_('Q1', result[0].title)
-        eq_('Q2', result[1].title)
+        assert 2 == len(result)
+        assert 'Q1' == result[0].title
+        assert 'Q2' == result[1].title
 
     def test_unknown_type(self):
         out = StringIO()
@@ -47,7 +52,7 @@ class CsvReaderTest(AbstractUniverseTest):
         logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
         result = list(CsvReader.read_csv(out))
-        eq_('Q1', result[0].title)
+        assert 'Q1' == result[0].title
 
     def test_invalid_row_is_skipped(self):
         f = StringIO()
@@ -56,7 +61,7 @@ class CsvReaderTest(AbstractUniverseTest):
 
         logging.basicConfig(level=40)  # Errors up to 30 (WARNING) are expected
 
-        eq_([], list(CsvReader.read_csv(f)))
+        assert [] == list(CsvReader.read_csv(f))
 
     def test_tostring(self):
         e = Entity("Q1", [Claim(Snak(2, "string", "a"))])

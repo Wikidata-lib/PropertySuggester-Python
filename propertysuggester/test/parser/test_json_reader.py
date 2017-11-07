@@ -1,16 +1,12 @@
-import unittest
 import gzip
 
 from pkg_resources import resource_filename
-from nose.tools import eq_
 
-from propertysuggester.test.parser.test_abstract_reader import AbstractUniverseTest
 from propertysuggester.parser import JsonReader
 from propertysuggester.utils.datamodel import Claim, Snak, Entity
 
 
-class JsonReaderTest(AbstractUniverseTest):
-
+class TestJsonReader():
     def test_updated_dump(self):
         file_name = resource_filename(__name__, "Wikidata-Q15511.json.gz")
         with gzip.open(file_name, 'r') as f:
@@ -24,15 +20,11 @@ class JsonReaderTest(AbstractUniverseTest):
             ],
             [Snak(248, "wikibase-item", "Q17597573")]
         )
-        eq_(1, len(result))
+        assert 1 == len(result)
         q15511 = result[0]
-        eq_('Q15511', q15511.title)
-        self.assertIn(claim, q15511.claims)
+        assert 'Q15511' == q15511.title
+        assert claim in q15511.claims
 
     def test_special_cases(self):
         data = dict([("id", "Q1"), ("type", "item")])
-        eq_(Entity("Q1", []), JsonReader._process_json(data))
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert Entity("Q1", []) == JsonReader._process_json(data)
