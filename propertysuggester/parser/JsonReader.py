@@ -48,7 +48,9 @@ def read_json(input_file):
         count += 1
         jsonline = compatible_str(jsonline)
         if count % 3000 == 0:
-            logging.info("processed %.2fMB" % (input_file.tell() / 1024.0 ** 2))
+            logging.info(
+                "processed %.2fMB" %
+                (input_file.tell() / 1024.0 ** 2))
         if jsonline[0] == "{":
             jsonline = jsonline.rstrip(",\r\n")
             data = json.loads(jsonline)
@@ -65,17 +67,20 @@ def _process_json(data):
         for statement in statements:
             references = []
             if "references" in statement:
-                for reference in statement["references"]:  # TODO: group reference snaks correctly
+                # TODO: group reference snaks correctly
+                for reference in statement["references"]:
                     if not reference["snaks"]:
                         continue
-                    for ref_id, snaks in sorted(list(reference["snaks"].items())):
+                    for ref_id, snaks in sorted(
+                            list(reference["snaks"].items())):
                         for snak in snaks:
                             ref = _parse_json_snak(snak)
                             if ref:
                                 references.append(ref)
             qualifiers = []
             if "qualifiers" in statement:
-                for qual_id, snaks in sorted(list(statement["qualifiers"].items())):
+                for qual_id, snaks in sorted(
+                        list(statement["qualifiers"].items())):
                     for snak in snaks:
                         qualifier = _parse_json_snak(snak)
                         if qualifier:
@@ -103,12 +108,16 @@ def _parse_json_snak(claim_json):
                 if datavalue["entity-type"] == "item":
                     value = "Q" + str(datavalue["numeric-id"])
                 else:
-                    logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
+                    logging.warning(
+                        "unknown entitytype: {0}".format(
+                            datavalue["entity-type"]))
             elif datatype == "wikibase-property":
                 if datavalue["entity-type"] == "property":
                     value = "P" + str(datavalue["numeric-id"])
                 else:
-                    logging.warning("unknown entitytype: {0}".format(datavalue["entity-type"]))
+                    logging.warning(
+                        "unknown entitytype: {0}".format(
+                            datavalue["entity-type"]))
             elif datatype == "time":
                 value = datavalue["time"]
             elif datatype == "quantity":
@@ -124,7 +133,9 @@ def _parse_json_snak(claim_json):
                 logging.warning("unknown wikidata datatype: %s" % datatype)
                 return None
         except KeyError as e:
-            logging.warning("unrecognized or mismatching datavalue for datatype: %s" % e)
+            logging.warning(
+                "unrecognized or mismatching datavalue for datatype: %s" %
+                e)
             return None
         except TypeError as e:
             logging.warning("type error: %s" % e)

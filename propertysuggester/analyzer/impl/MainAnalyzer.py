@@ -41,6 +41,13 @@ class ItemAnalyzer(Analyzer):
             pid1count = self.tuple_occurrences[pid1, value]
             for pid2, paircount in row.items():
                 if paircount > 0:
-                    probability = (paircount/float(pid1count))
-                    rules.append(Rule(pid1, value, pid2, paircount, probability, "item"))
+                    probability = (paircount / float(pid1count))
+                    rules.append(
+                        Rule(
+                            pid1,
+                            value,
+                            pid2,
+                            paircount,
+                            probability,
+                            "item"))
         return rules

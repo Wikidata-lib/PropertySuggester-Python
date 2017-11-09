@@ -19,7 +19,10 @@ def write_csv(entities, output_file, delimiter=","):
     @type output_file: file or StringIO.StringIO
     @type delimiter: str
     """
-    csv_writer = csv.writer(output_file, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
+    csv_writer = csv.writer(
+        output_file,
+        delimiter=delimiter,
+        quoting=csv.QUOTE_MINIMAL)
 
     for entity in entities:
         for claim in entity.claims:

@@ -6,12 +6,11 @@ python:
 install: 
     - sudo apt-get install libmysqlclient-dev
     - pip install -r requirements.txt
+    - pip install codecov pytest-cov
 
 script:
-    - coverage run --source propertysuggester -m pytest -v
-    - flake8 . --max-line-length=100
+    - flake8 .
+    - pytest -v --cov=propertysuggester
 
 after_success:
-    - coverage report
-    - coveralls debug
-    - coveralls
+    - codecov

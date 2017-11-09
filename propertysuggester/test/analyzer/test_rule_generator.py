@@ -24,7 +24,7 @@ test_data3 = [
     Entity('Q15', [
         Claim(
             Snak(31, 'wikibase-entityid', 'Q5107'),
-            [Snak(12, 'wikibase-entityid', 'Q123'), Snak(13, 'string', 'qual')],
+            [Snak(12, 'wikibase-entityid', 'Q13'), Snak(13, 'string', 'qual')],
             [Snak(22, 'wikibase-entityid', 'Q345'), Snak(23, 'string', 'rel')]
         )
     ])

@@ -22,7 +22,10 @@ def read_csv(input_file, delimiter=","):
     current_title = None
     current_claim = None
     claims = []
-    csv_reader = csv.reader(input_file, delimiter=delimiter, quoting=csv.QUOTE_MINIMAL)
+    csv_reader = csv.reader(
+        input_file,
+        delimiter=delimiter,
+        quoting=csv.QUOTE_MINIMAL)
 
     for row in csv_reader:
         if len(row) != 5:

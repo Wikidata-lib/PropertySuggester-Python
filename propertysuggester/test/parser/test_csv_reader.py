@@ -25,12 +25,12 @@ class TestCsvReader():
 
         assert "Q1" == q1.title
         assert (Claim(Snak(373, "string", "Universe"), [],
-                [Snak(143, "wikibase-item", "Q328")]) in
+                      [Snak(143, "wikibase-item", "Q328")]) in
                 q1.claims)
         assert Claim(Snak(31, "wikibase-item", "Q223557")) in q1.claims
         assert Claim(Snak(31, "wikibase-item", "Q1088088")) in q1.claims
         assert (Claim(Snak(361, "wikibase-item", "Q3327819"),
-                [Snak(31, "wikibase-item", "Q41719")], []) in
+                      [Snak(31, "wikibase-item", "Q41719")], []) in
                 q1.claims)
 
     def test_multiple_entities(self):

@@ -11,7 +11,8 @@ class Entity:
         return isinstance(other, Entity) and self.__dict__ == other.__dict__
 
     def __repr__(self):
-        return "title: {0} claims: {1}".format(self.title, map(str, self.claims))
+        return "title: {0} claims: {1}".format(
+            self.title, map(str, self.claims))
 
 
 class Claim:

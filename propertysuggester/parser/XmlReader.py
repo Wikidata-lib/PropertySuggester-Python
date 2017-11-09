@@ -77,7 +77,9 @@ def _get_xml(input_file):
         elif element.tag == page_tag:
             count += 1
             if count % 3000 == 0:
-                logging.info("processed %.2fMB" % (input_file.tell() / 1024.0 ** 2))
+                logging.info(
+                    "processed %.2fMB" %
+                    (input_file.tell() / 1024.0 ** 2))
             if model == "wikibase-item":
                 yield title, claim_json
         element.clear()
@@ -120,13 +122,17 @@ def _parse_json_snak(claim_json):
             if claim_json[3]["entity-type"] == "item":
                 value = "Q" + str(claim_json[3]["numeric-id"])
             else:
-                logging.warning("unknown entitytype: {0}".format(claim_json[3]["entity-type"]))
+                logging.warning(
+                    "unknown entitytype: {0}".format(
+                        claim_json[3]["entity-type"]))
         elif datatype == "time":
             value = claim_json[3]["time"]
         elif datatype == "quantity":
             value = claim_json[3]["amount"]
         elif datatype == "globecoordinate":
-            value = "N{0}, E{1}".format(claim_json[3]["latitude"], claim_json[3]["longitude"])
+            value = "N{0}, E{1}".format(
+                claim_json[3]["latitude"],
+                claim_json[3]["longitude"])
         elif datatype == "bad":
             # for example in Q2241
             return None

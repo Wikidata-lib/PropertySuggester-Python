@@ -10,6 +10,7 @@ class CompressedFileType(argparse.FileType):
     Automatically creates gzip or bz2 reader/writer if a file ends
     with .gz or .bz2
     """
+
     def __call__(self, string):
         try:
             if string.endswith('.gz'):

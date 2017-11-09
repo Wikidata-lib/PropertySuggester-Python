@@ -8,23 +8,25 @@ from propertysuggester.utils.datamodel import Claim, Snak, Entity
 
 class TestXmlReader():
     def test_universe(self):
-        with gzip.open(resource_filename(__name__, "Wikidata-Q1.xml.gz"), "r") as f:
+        file_path = resource_filename(__name__, "Wikidata-Q1.xml.gz")
+        with gzip.open(file_path, "r") as f:
             result = list(XmlReader.read_xml(f))
         assert 1 == len(result)
         q1 = result[0]
 
         assert "Q1" == q1.title
         assert (Claim(Snak(373, "string", "Universe"), [],
-                [Snak(143, "wikibase-item", "Q328")]) in
+                      [Snak(143, "wikibase-item", "Q328")]) in
                 q1.claims)
         assert Claim(Snak(31, "wikibase-item", "Q223557")) in q1.claims
         assert Claim(Snak(31, "wikibase-item", "Q1088088")) in q1.claims
         assert (Claim(Snak(361, "wikibase-item", "Q3327819"),
-                [Snak(31, "wikibase-item", "Q41719")], []) in
+                      [Snak(31, "wikibase-item", "Q41719")], []) in
                 q1.claims)
 
     def test_updated_dump(self):
-        with gzip.open(resource_filename(__name__, "Wikidata-Q9351.xml.gz"), "r") as f:
+        file_path = resource_filename(__name__, "Wikidata-Q9351.xml.gz")
+        with gzip.open(file_path, "r") as f:
             result = list(XmlReader.read_xml(f))
 
         assert 1 == len(result)

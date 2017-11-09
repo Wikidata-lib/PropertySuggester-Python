@@ -26,6 +26,6 @@ if __name__ == "__main__":
     rules = RuleGenerator.compute_rules(CsvReader.read_csv(args.input))
     logging.info("writing csv")
     CsvGenerator.create_pair_csv(rules, args.output)
-    logging.info("done - {0:.2f}s".format(time.time()-start))
+    logging.info("done - {0:.2f}s".format(time.time() - start))
     logging.info("now import this csv file with "
                  "PropertySuggester/maintenance/UpdateTable.php")
